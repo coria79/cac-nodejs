@@ -1,0 +1,1425 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+:root {
+    --bg-color: #EDEDED;
+    /* color del fondo */
+    --primary-color: white;
+    /* color de las letras */
+    --secondary-color: #121212;
+    /* lo mismo que el anterior pero al reves */
+    --third-color: #FFED00;
+    /* este es muy variable, lo use en el boton de Conoce más y en el Registrate */
+    --login-bg: #4F4F4F;
+    /* color del fondo del login */
+    --header-footer-bgcolor: #000000;
+    /* color del fondo del footer */
+    --login-stroke: #A7A7A7;
+    /* borde del login */
+    --button-unselected-color: #838383;
+    /* boton desseleccionado */
+    --buttons-login-extra: #8A821C;
+    /* botones de google y facebook en el login */
+    --placeholder-color: #A5A5A5;
+    /* color de la letra de Mail, Contraseña, etc */
+    --background-label: #383838;
+    --cancionesmasescuchadas-bg: #242124;
+    /* esto refiere al fondo de la sección */
+    --cancionesmasescuchadas-buttoncontainer: #474747;
+    /* esto refiere al fondo del contenedor de los botones*/
+    --cancionesmasescuchadas-button-color: #D2D2D2;
+    /* el color del boton de play por ej */
+
+    --discografia-bg: #CCCCCC;
+    /* el fondo de discografía */
+
+    /* fuente de toda la pag */
+    --primary-font: "Plus Jakarta Sans", sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font-family: var(--primary-font);
+    box-sizing: border-box;
+}
+
+body {
+    padding-top: 6rem;
+    background-color: var(--bg-color);
+    
+}
+
+header,
+footer {
+    
+    width: 100%;
+    background-color: var(--header-footer-bgcolor);
+    color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
+footer ul li a{
+    
+    color: var(--bg-color);
+    text-decoration: none;
+
+}
+
+footer ul li a:hover {
+    color: var(--third-color);
+
+}
+
+header {
+    position: fixed;
+    top: 0;
+    z-index: 3;
+}
+
+#menu #menuHamburguesa {
+    display: none;
+}
+
+.invisible{
+    display: none;
+}
+
+.logo-header {
+    width: 64px;
+    display: flex;
+
+}
+
+.nav-container {
+    max-width: 1700px;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.login{
+    display: block;
+    position: fixed;
+    z-index: 3;
+}
+
+#menu{
+    display: flex;
+}
+.nav-container ul {
+    list-style: none;
+    max-width: 800px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: center;
+    align-content: center;
+    gap: 5px;
+    padding: 0;
+    margin: 0 100px 0 20px;
+}
+
+.nav-container ul li {
+    text-align: center;
+}
+
+
+.nav-container ul li a {
+    color: var(--bg-color);
+    text-decoration: none;
+}
+.nav-container ul li a:hover {
+    color: var(--third-color);
+
+}
+
+#login-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 5.26px;
+    margin-left: auto;
+    background-image: url('../img/login-vector.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-color: #5C5C5C;
+    border: 1px solid white;
+    flex-shrink: 0;
+    cursor: default;
+}
+
+.contenido-principal {
+    margin: 50px;
+    display: flex;
+}
+
+/* -----------------LOGIN--------------------------- */
+
+.nav-container #login-button section#inicio-sesion {
+    visibility: hidden;
+    cursor: default;
+}
+
+.nav-container #login-button:hover section#inicio-sesion {
+    visibility: visible;
+    cursor: default;
+}
+
+.nav-container #login-button section#inicio-sesion:hover .sec-sesion {
+    visibility: visible;
+    cursor: default;
+}
+
+#inicio-sesion{
+    display: flex;
+    justify-content: center;
+}
+
+#loginDiv{
+    position: absolute;
+    right: 0;
+    visibility: hidden;
+    width: auto;
+}
+
+#loginDiv.active{
+    visibility: visible;
+}
+
+#loginDiv:hover{
+    visibility: visible;
+}
+
+#loginDiv #inicio-sesion {
+    
+    width: 450px;
+    padding: 35px;
+}
+
+#loginDiv #inicio-sesion .sec-sesion {
+    position: absolute;
+    right: 0;
+    top: 50px;
+}
+
+.sec-sesion {
+    width: 450px;
+    border-radius: 20px;
+    padding: 30px 25px;
+    background-color: var(--login-bg);
+    display: flex;
+    align-items: left;
+    flex-direction: column;
+    position: relative;
+}
+
+.sec-sesion h3 {
+    padding: 20px 0 0 5px;
+    text-align: left;
+    color: var(--primary-color);
+}
+
+/* con esto se activa el registro */
+.registro {
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    z-index: 4;
+}
+
+#cerrar {
+    
+    position: absolute;
+    width: 25px;
+    right: 30px;
+    top: 30px;
+    display: block;
+
+}
+
+.overlay {
+    background: rgba(0, 0, 0, .3);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.not-active {
+    pointer-events: none;
+    cursor: default;
+}
+
+.cerrarLogin{
+    position: absolute;
+    width: 25px;
+    right: 30px;
+    top: 30px;
+    display: block;
+}
+
+.sec-registro {
+    width: 450px;
+    padding: 30px 25px;
+    background: var(--login-bg);
+    color: var(--bg-color);
+}
+
+.sec-registro h3 {
+    padding: 20px 0 0 5px;
+    color: var(--primary-color);
+}
+
+.sec-input {
+    height: 40px;
+    margin: 20px 0 10px 0;
+    border-radius: 8px;
+    background-color: var(--background-label);
+    text-indent: 15px;
+    color: var(--bg-color);
+    border: 1px solid transparent;
+}
+
+.sec-input.error{
+    border: 2px solid red;
+}
+
+.sec-input::placeholder {
+    color: var(--placeholder-color);
+    text-align: left;
+}
+
+.sec-guardado {
+    display: flex;
+    justify-content: space-between;
+    color: var(--bg-color);
+    padding: 25px 0;
+}
+
+.sec-guardado label {
+    width: auto;
+
+}
+
+.registroP{
+    width: auto;
+    margin: 10px 0;
+    color: var(--bg-color);
+}
+
+.registroP a{
+    margin-left: 5px;
+    color: var(--third-color);
+}
+
+.registroP a:hover{
+    
+    color: #c9bb00;
+}
+.sec-guardado #recordar-contraseña {
+    background-color: var(--login-bg);
+    width: auto;
+    border: none;
+    color: var(--bg-color);
+    font-weight: bold;
+}
+
+#recordar-contraseña:hover {
+    color: rgb(255, 237, 0);
+}
+
+.btn-general {
+    height: 40px;
+    border-radius: 10px;
+    margin: 20px 0 10px 0;
+    border: none;
+    background-color: #5e5e5e;
+    color: #fff;
+    font-weight: bolder;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.53);
+    margin: 10px 0 10px 0;
+}
+
+
+
+.btn-general:hover {
+    background-color: #454343;
+
+}
+
+.btn-general:active {
+    background-color: #000000;
+}
+
+
+
+.estilos-check {
+
+    color: var(--bg-color);
+    font-size: 15px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.sec-registro .estilos-check {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    padding: 25px 0;
+}
+
+input[type="checkbox"] {
+    width: 25px;
+    height: 25px;
+    margin-right: 7px;
+    border-radius: 5px;
+    border: none;
+    appearance: none;
+    outline: none;
+    transition: outline 0.1s;
+    background-color: #383838;
+
+}
+
+
+
+/* input[type="checkbox"]:checked {} */
+
+input[type="checkbox"]:not(:disabled):checked {
+    background-image: url('../img/check.png');
+    background-size: 18px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #1f1f1f;
+}
+
+
+input[type="checkbox"]:disabled {
+    background-color: var(--checkbox-disabled-bg-color);
+}
+
+/* input[type="checkbox"]:disabled:checked {} */
+
+input[type="checkbox"]:not(:disabled):hover {
+    background-color: #303030;
+}
+
+.info-user {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.info-reg {
+    margin: 20px 0 10px 0;
+    background-color: var(--background-label);
+    text-indent: 15px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    color: var(--bg-color);
+    
+}
+
+.info-reg.error {
+    border: 2px solid red;
+    
+}
+
+input{
+    outline: none;
+}
+
+.info-reg::placeholder {
+    color: var(--placeholder-color);
+    text-align: left;
+}
+
+.registrate {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.registrate label {
+    padding: 25px 0;
+    color: white;
+    font-size: 15px;
+    width: auto;
+
+
+}
+
+.registrate label a {
+    background-color: var(--login-bg);
+    border: none;
+    color: rgb(255, 237, 0);
+    font-size: 15px;
+    font-weight: bold;
+    text-align: right;
+    width: 80px;
+    padding-right: 0;
+}
+
+.registrate input:hover {
+    color: var(--buttons-login-extra);
+}
+
+.btns-sesion {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.btn-sesion {
+    margin: 15px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    color: var(--bg-color);
+    background-color: var(--buttons-login-extra);
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.53);
+    position: relative;
+}
+
+.btn-sesion:hover {
+    background-color: #c8be2b;
+}
+
+.btn-sesion:active {
+    background-color: #5f5a13;
+}
+
+.sec-sesion fieldset {
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+
+}
+
+.sec-sesion legend {
+    text-align: center;
+    font-size: 15px;
+    color: white;
+    margin: 0 auto;
+    padding: 10px 10px 0px 10px;
+}
+
+
+.btn-reg input {
+    width: 100%;
+}
+.confirmRegistroPop{
+    display: flex;
+    position: relative;
+    width: 350px;
+    height: 250px;
+    border-radius: 20px;
+    margin: auto auto;
+    padding: 20px;
+    align-content: center;
+    flex-direction: column;
+    background-color: var(--login-bg);
+}
+
+.confirmRegistroPop h4, .confirmRegistroPop p{
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color:var(--bg-color);
+    margin: auto auto;
+}
+
+
+.confirmRegistroPop div img{
+    width: 50px;
+    
+}
+.confirmRegistroPop div{
+    width: 50px;
+    height: 50px;
+    padding-bottom:20px ;
+    justify-content: center;
+    align-items: center;
+    margin: auto auto;
+}
+
+
+/* ------------------ banner ----------------------- */
+#Principal {
+    background: linear-gradient(90deg,  var(--secondary-color), #222222);
+}
+
+.contenido-principal-div {
+    margin: 0 auto;
+    width: 100%;
+
+    text-align: left;
+    max-width: 1700px;
+    display: flex;
+    flex-direction: row;
+}
+
+.contenido-principal-img {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 55px;
+    margin-right: 75px;
+}
+
+.btn-banner {
+    text-decoration: none;
+    text-align: center;
+    justify-content: center;
+    max-width: 300px;
+    padding: 10px;
+    margin: 15px 0;
+    border-radius: 12.35px;
+    border: none;
+    color: var(--secondary-color);
+    background-color: var(--third-color);
+    font-weight: bold;
+}
+
+.btn-banner:hover{
+    background-color: rgb(250, 219, 80);
+    color: var(--secondary-color);
+    transition: 0.5s;
+}
+
+.contenido-principal-logo {
+    width: 250px;
+}
+
+.contenido-principal-p2 {
+    color: var(--primary-color);
+    width: 100%;
+
+    text-align: left;
+}
+
+.contenido-principal-fotos {
+    display: flex;
+    flex-direction: row;
+}
+
+/* IMG Hoover */
+.contenido-principal-fotos img {
+    height: 100%;
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
+    /* Agrega una transición suave al efecto */
+}
+
+.contenido-principal-fotos img:hover {
+    box-shadow: 0 0 5px 2px rgba(255, 237, 0, 0.7);
+    /* Resaltado en blanco */
+}
+
+
+
+
+.gallery {
+    width: 120vw;
+    display: flex;
+    flex-direction: row;
+
+    row-gap: 1rem;
+
+    & .image-container {
+        flex: 1;
+        width: 100%;
+        height: 750px;
+        transition: flex 0.3s ease-in;
+        position: relative;
+        overflow: hidden;
+
+        @media only screen and (width > 480px) {
+            &:hover {
+                flex: 2;
+
+            }
+        }
+
+        & .image {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+
+
+
+}
+
+.gallery figure {
+    margin: 0 !important;
+}
+
+
+
+.image-container .description {
+    position: absolute;
+    text-align: center;
+
+    bottom: 0;
+    opacity: 0;
+    margin: 0;
+    filter: grayscale(0);
+    padding: 25px 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 40px 40px rgba(0, 0, 0, 0.1);
+}
+
+.description h3,
+.description p {
+
+    color: var(--primary-color);
+}
+
+
+.image-container:hover .description {
+    opacity: 1;
+    transition: 0.3s ease-in;
+    background-color: rgba(0, 0, 0, 0.9);
+    box-shadow: 0px 0px 40px 40px rgba(0, 0, 0, 0.9);
+}
+
+/* ------------------ historia ----------------------- */
+#historia {
+    background-color: var(--bg-color);
+    padding: 150px 0;
+}
+
+.historia-div {
+    margin: 0 auto;
+    width: 90%;
+    text-align: left;
+    max-width: 1140px;
+
+}
+
+.historia-h2 {
+    padding-top: 20px;
+}
+
+.historia-p {
+    margin-top: 20px;
+}
+
+/* ------------------ discografia ----------------------- */
+#Discografía {
+    background-color: #a59f9f;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    padding: 150px 0;
+}
+
+#Discografía h2 {
+    max-width: 1140px;
+    width: 90%;
+    margin: 0 auto;
+    
+
+}
+
+.album-img {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    overflow: hidden;
+    width: 100%;
+    box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.63);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 1s;
+    position: relative;
+}
+
+.album-img img {
+    width: 100%;
+    display: block;
+    border-radius: 20px;
+    object-fit: cover;
+    height: 100%;
+}
+
+.album-img:hover {
+    transform: scale(1.05);
+    z-index: 1;
+}
+
+.info-disco {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    background: rgba(67, 63, 63, 0.90);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    opacity: 0;
+    transition: 0.6s;
+}
+
+.info-disco:hover {
+    opacity: 1;
+}
+
+.info-disco h3 {
+    font-weight: bold;
+    font-size: 25px;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.info-disco p {
+    font-size: 18px;
+    color: white;
+}
+
+.info-disco p span {
+    display: block;
+    font-size: 18px;
+    font-weight: bolder;
+    color: white;
+}
+
+.sec-discos {
+    width: 90%;
+    max-width: 1140px;
+    margin: 40px auto;
+    display: grid;
+    gap: 40px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+/* ----------------------------------------- */
+
+#masescuchadas {
+    background-color: var(--cancionesmasescuchadas-bg);
+    padding: 150px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#masescuchadas h2 {
+    margin-bottom: 40px;
+    color: white;
+}
+
+.ventanaescucha {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 90%;
+    margin-left: 40px;
+    margin-right: 40px;
+    max-width: 1140px
+}
+
+.contenedor-botones {
+    overflow-y: scroll;
+    height: 500px;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #767676;
+    border-radius: 14px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #949494;
+}
+
+.botonesreproductor {
+    background-image: url('../img/play.png');
+    background-position: right 30px center;
+    background-repeat: no-repeat;
+    background-size: 45px;
+    padding: 15px 100px 15px 0px;
+    background-color: var(--cancionesmasescuchadas-buttoncontainer);
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 99%;
+    margin-bottom: 15px;
+    border-radius: 7.22px;
+}
+
+.ventanaescucha a{
+    text-decoration: none;
+    
+}
+
+.botonesreproductor:hover{
+    transition: 0.5s;
+    background-color: #555555;
+}
+
+.textoBoton {
+    width: 10px;
+    text-align: center;
+    color: var(--cancionesmasescuchadas-button-color);
+    font-weight: 500;
+    margin: 0 35px 0 35px;
+}
+
+.portadaAlbum {
+    width: 72px;
+    height: auto;
+}
+
+.textoBotonCancion {
+    padding-left: 25px;
+    text-align: left;
+    color: var(--cancionesmasescuchadas-button-color);
+    font-weight: 500;
+    margin: 0;
+}
+
+
+
+/*------------ Inicio de carrusel Tienda-------------*/
+
+#Tienda {
+    background-color: #f9f9f9;
+    padding: 150px 0;
+
+}
+
+#Tienda h2 {
+    font-size: 2.3rem;
+}
+
+.card {
+    width: 16rem;
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
+.carousel {
+    margin: 55px 0 !important;
+}
+
+.card-img-top {
+    height: 260px;
+    width: 280px;
+    justify-content: center;
+    background-size: cover;
+    border-bottom: 1px solid #b8b6b6;
+}
+
+.container {
+    /* --bs-gutter-x: 1.5rem; */
+    /* --bs-gutter-y: 0; */
+    width: 100%;
+    /* padding-right: calc(var(--bs-gutter-x) * .5); */
+    /* padding-left: calc(var(--bs-gutter-x) * .5); */
+    /* margin-right: auto; */
+    /* margin-left: auto; */
+    
+    max-width: 1140px !important;
+    padding: 0 !important;
+    display: flex !important;
+    justify-content: center!important;
+}
+
+.row {
+    margin: 0 !important;
+    width: 90%;
+    display: flex !important;
+    justify-content: space-evenly !important;
+
+}
+
+.carousel-item.active {
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.col-md-4 {
+    display: flex !important;
+    width: auto !important;
+}
+
+.col-md-12 {
+    padding: 0 !important;
+}
+
+button span {
+    background-color: #a59f9f;
+    border-radius: 15%;
+}
+
+/*---------------Fin de la tieda---------------*/
+
+ul {
+    list-style: none;
+}
+
+footer {
+    flex-wrap: wrap;
+    padding: 7rem 0;
+    z-index: 1;
+}
+
+.footcontainer {
+    display: flex;
+
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 1480px;
+    margin-left: 40px;
+    margin-right: 40px;
+
+
+
+}
+
+.carousel-control-next,
+.carousel-control-prev {
+    width: auto !important;
+}
+
+#logo-footer {
+    width: auto;
+    height: 302px;
+}
+
+.footcontainer ul {
+    margin-left: 80px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 45px;
+}
+
+
+
+#copyr {
+
+    display: flex;
+    justify-content: flex-end;
+    max-width: 1480px;
+    margin-left: 40px;
+    margin-top: 40px;
+    margin-right: 40px;
+    text-align: right;
+}
+
+/* para compu */
+@media only screen and (max-width: 1700px) and (min-width: 608px){
+
+    .nav-container {
+        margin: 0 40px;
+    }
+
+    .contenido-principal-img {
+        margin-left: 40px;
+    }
+
+}
+
+/* para celu */
+@media only screen and (max-width: 608px) {
+
+
+.nav-container {
+    max-width: 1700px;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    position: relative;
+}
+
+.logo-header{
+    z-index: 1;
+}
+
+
+#menu{
+    display: flex;
+    z-index: 0;
+    top: 0;
+    background-color: black;
+    visibility: hidden;
+    flex-direction: column;
+    width: 100vw;
+    position: absolute;
+    height: 100vh;
+    margin: 0;
+    padding: 20px 25px;
+    row-gap: 100px;
+}
+.nav-container ul {
+    width: 100vw;
+    
+    list-style: none;
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: flex-start;
+    gap: 70px;
+    padding: 0;
+    
+}
+
+.nav-container ul li {
+    text-align: left;
+}
+
+
+.nav-container ul li a {
+    color: var(--bg-color);
+    text-decoration: none;
+}
+
+#login-button {
+    width: 100%;
+    height: auto;
+    border-radius: 5.26px;
+    color: var(--bg-color);
+    font-weight: 600;
+    padding: 15px 0;
+    background-image: none;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-color: #5C5C5C;
+    border: 2px solid white;
+    flex-shrink: 0;
+    cursor: default;
+}
+
+#login-button #inicio-sesion {
+    right: 0;
+    position: absolute;
+    top: 3vh;
+    width: 100%;
+    padding: 0;
+    
+}
+
+#login-button #inicio-sesion .sec-sesion {
+    position: absolute;
+    top: 6vh;
+    right: 0;
+    
+}
+
+.sec-sesion {
+    position: relative;
+    width: 100%;
+    border-radius: 20px;
+    padding: 70px 25px;
+    background-color: var(--login-bg);
+    display: flex;
+    align-items: left;
+    flex-direction: column;
+}
+
+.cerrarLogin{
+    position: absolute;
+    width: 25px;
+    right: 30px;
+    top: 30px;
+    display: block;
+}
+
+#menu #menuHamburguesa {
+    visibility: visible;
+    width: 40px;
+    height: 40px;
+    margin-left: 0;
+    background-image: url('../img/menu.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-color: transparent;
+   border: none;
+    flex-shrink: 0;
+    cursor: default;
+    position: absolute;
+    z-index: 2;
+    align-self: flex-start;
+    display: block;
+}
+
+#menu #menuHamburguesa.active {
+ 
+    background-image: url('../img/close.png');
+  
+}
+
+
+.invisible{
+    display: block;
+    margin-bottom: 75px;
+}
+
+
+.logo-header{
+ width: 50px;
+}
+
+.nav-container #login-button:hover section#inicio-sesion {
+    visibility: hidden;
+    cursor: default;
+}
+
+.nav-container #login-button section#inicio-sesion:hover .sec-sesion {
+    visibility: hidden;
+    cursor: default;
+}
+
+body {
+    padding-top: 5rem;
+    background-color: var(--bg-color);
+
+}
+
+footer{
+    padding: 4rem 0 2rem 0;
+}
+
+
+
+.footcontainer{
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 120px;
+}
+
+#logo-footer {
+    width: auto;
+    height: 200px;
+}
+
+.footcontainer ul {
+    margin-left: 0;
+    row-gap: 45px;
+   
+}
+
+
+#copyr {
+
+    display: flex;
+    justify-content: center;
+    max-width: 1480px;
+    margin-left: 0;
+    margin-top: 80px;
+    font-size: 14px;
+    margin-right: 0;
+    text-align: right;
+}
+
+.botonesreproductor {
+    background-image: url('../img/play.png');
+    background-position: right 15px center;
+    background-repeat: no-repeat;
+    background-size: 25px;
+    padding: 15px 50px 15px 0;
+    background-color: var(--cancionesmasescuchadas-buttoncontainer);
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 99%;
+    margin-bottom: 15px;
+    border-radius: 7.22px;
+}
+
+
+.textoBoton {
+    width: 2px;
+    text-align: center;
+    color: var(--cancionesmasescuchadas-button-color);
+    font-weight: 500;
+    margin: 0 25px;
+    font-size: 12px;
+}
+
+.portadaAlbum {
+    width: 55px;
+    height: auto;
+}
+
+.textoBotonCancion {
+    padding-left: 15px;
+    text-align: left;
+    color: var(--cancionesmasescuchadas-button-color);
+    font-weight: 500;
+    margin: 0;
+    font-size: 12px;
+}
+
+.ventanaescucha {
+    margin: auto;
+    width: 90%;
+    
+}
+
+.contenido-principal-div{
+    row-gap: 15px;
+    width: 100vw;
+    flex-direction: column;
+}
+
+.contenido-principal-img{
+    order: 2;
+    margin: 0;
+    row-gap: 30px;
+}
+
+
+.contenido-principal-logo {
+    width: 180px;
+    margin: 20px 10px;
+}
+
+.contenido-principal-p {
+    width: 100vw;
+
+}
+.contenido-principal-p2 {
+    color: var(--primary-color);
+    width: 100vw;
+    font-size: 15px;
+    text-align: left;
+    font-size: 15px;
+    padding: 0 10px;
+}
+
+
+
+
+.gallery{
+    order: 1;
+    width: 100vw;
+}
+
+.image-container{
+    height: 350px !important; 
+}
+
+.image{
+    height: 100%;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sec-discos {
+    row-gap: 25px;
+    column-gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+}
+
+.info-disco h3 {
+    font-size: 16px;
+ 
+    margin: 15px 0;
+}
+
+.info-disco p {
+    font-size: 12px;
+  
+}
+
+.info-disco p span {
+
+    font-size: 12px;
+}
+
+.card {
+    width: 6rem;
+    margin-bottom: 15px;
+    height: 220px !important;
+    padding: 0px !important;
+}
+
+.card-img, .card-img-top {
+    height: 100px !important;
+}
+
+.col-md-4{
+    padding: 0px !important;
+}
+
+.card-title{
+    font-size: 13px !important;
+    font-weight: 700;
+}
+
+.card-text{
+    font-size: 11px !important;
+}
+
+
+.login{
+    display: block;
+    position: fixed;
+    z-index: 3;
+}
+
+.btn-banner {
+    margin: auto auto 50px auto;
+    max-width: 95%;
+}
+
+#loginDiv{
+    visibility: hidden;
+}
+
+#loginDiv.active{
+    visibility: hidden;
+}
+
+#loginDiv:hover{
+    visibility: hidden;
+}
+
+}
+
+/*tablet, notebook*/
+@media only screen and (min-width: 608px) and (max-width: 1120px) {
+    .image-container{
+        height: 500px !important; 
+    }
+    }

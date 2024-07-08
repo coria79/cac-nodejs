@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="icon" href="img/logo.ico">
+  <title>Soda Estereo Fan Page</title>
+</head>
+
+<body>
+  <header>
+    <nav class="nav-container">
+      
+      <a href="#top" style="width: 64px; z-index: 1;"><img class="logo-header" src="./img/logo-main.png" alt="soda stereo" /></a>
+
+      <div id="menu">
+        <button id="menuHamburguesa"></button>
+        <div class="invisible"></div>
+        <ul>
+          <li><a href="#historia" id="lista0">Historia</a></li>
+          <li><a href="#masescuchadas" id="lista1">Exitos</a></li>
+          <li><a href="#Discografía" id="lista2">Discografía</a></li>
+          <li><a href="#Tienda" id="lista3">Tienda</a></li>
+        </ul>
+        <button id="login-button"></button>
+        <div id="loginDiv">
+        <section id="inicio-sesion">
+            <form class="sec-sesion">
+              <h3>Iniciar sesión</h3>
+              <input type="email" name="email" id="emailLogin" placeholder="Email" class="sec-input">
+              <div id="avisoEmailLogin"></div>
+              <input type="password" name="clave" id="clave" placeholder="Contraseña" class="sec-input">
+              <div id="avisoPassLogin"></div>
+              <div class="sec-guardado">
+                <label class="estilos-check">
+                  <input type="checkbox">
+                  Recuerda
+                </label>
+                <a href="#" id="recordar-contraseña">¿No recordas tu contraseña?</a>
+              </div>
+              <div id="avisoLogin"></div>
+              <input type="submit" id="iniciar-sesion" value="Iniciar sesión" class="btn-general">
+              <div class="registrate">
+                <span class="registroP">
+                  ¿No tenes cuenta?
+
+
+                  <a href="javascript:mostrar_registro()" id="aRegistrar">Registrate</a>
+
+                </span>
+
+              </div>
+              <fieldset>
+                <legend>o inicia con</legend>
+                <div class="btns-sesion">
+                  <!-- poner emoji dentro del boton -->
+                  <input type="submit" value="Cuenta de Google" class="btn-sesion">
+                  <input type="submit" value="Cuenta de Facebook" class="btn-sesion">
+                </div>
+              </fieldset>
+            </form>
+          </section>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <div class="login" id="sectionLogin"></div>
+    <div class="registro" id="sectionRegistro"></div>
+    <div class="bienvenida" id="sectionBienvenida"></div>
+
+    <section id="Principal">
+      <div class="contenido-principal-div" data-aos="zoom-in" data-aos-duration="300">
+        <div class="contenido-principal-img">
+          <img class="contenido-principal-logo" src="./img/logo-banner.png" alt="Soda Stereo" />
+
+          <div class="contenido-principal-p">
+            <p class="contenido-principal-p2">
+              ¡Bienvenidos a la página de Soda Stereo! Aquí encontrarás contenido sobre
+              la legendaria banda de rock, su música, historia y legado. Descubre
+              también el merchandising oficial de la banda. Únete y disfruta del universo soda.
+            </p>
+          </div>
+          <a href="#historia" class="btn-banner">Conoce más</a>
+        </div>
+
+
+        <div class="gallery">
+          <figure class="image-container">
+            <img src="./img/GustavoCeratti.jpg" alt="Gustavo Cerati" class="image">
+            <div class="description">
+              <h3>Gustavo Cerati</h3>
+              <p>Voz y guitarra</p>
+            </div>
+
+          </figure>
+          <figure class="image-container">
+            <img src="./img/ZetaBosio.png" alt="Zeta Bosio" class="image">
+            <div class="description">
+              <h3>Zeta Bosio</h3>
+              <p>Bajo</p>
+            </div>
+          </figure>
+          <figure class="image-container">
+            <img src="./img/CharlyAlberti.jpg" alt="Charly Alberti" class="image">
+            <div class="description">
+              <h3>Charly Alberti</h3>
+              <p>Bateria y percusión</p>
+            </div>
+          </figure>
+        </div>
+
+
+      </div>
+    </section>
+    <section id="historia">
+      <div class="historia-div" data-aos="fade-down" data-aos-duration="300">
+        <h2 class="historia-h2">Historia</h2>
+        <p class="historia-p">
+          Fue una influyente banda internacional de rock argentina formada en 1982 en Buenos Aires,
+          integrada por Gustavo Cerati (voz, guitarra), Zeta Bosio (bajo) y Charly Alberti (batería).
+          Considerada una de las bandas más importantes del rock en español, fusionaron el rock con
+          elementos de new wave, pop y música electrónica, contribuyendo al surgimiento y
+          consolidación del rock latinoamericano. Su álbum debut homónimo, "Soda Stereo" (1984),
+          marcó el inicio de su carrera. Luego, con discos como "Nada Personal" (1985) y "Signos"
+          (1986), consolidaron su posición como referentes del rock en América Latina. Durante los
+          años siguientes, lanzaron álbumes innovadores como "Canción Animal" (1990) y "Dynamo"
+          (1992), explorando nuevos sonidos y alcanzando gran éxito comercial. En 1997, anunciaron
+          su separación tras una gira de despedida, aunque se reunieron brevemente en 2007 para
+          una serie de conciertos. Tras la muerte de Cerati en 2014, la banda se disolvió definitivamente.
+          El legado de Soda Stereo perdura como una influencia duradera en la música latina y su
+          impacto sigue siendo relevante en la cultura musical de la región.
+        </p>
+
+      </div>
+    </section>
+    <section id="masescuchadas">
+      <div class="ventanaescucha" data-aos="fade-down" data-aos-duration="300">
+        <h2>Exitos</h2>
+        <div class="contenedor-botones">
+          <a href="https://www.youtube.com/watch?v=T_FkEw27XJ0&pp=ygUQZGUgbXVzaWNhIGxpZ2VyYQ%3D%3D"
+            target="_blank" class="botonesreproductor">
+              <p class="textoBoton">1</p>
+              <img src="./img/album-animal.jpg" alt="" class="portadaAlbum" />
+              <p class="textoBotonCancion">
+                De Música Ligera - Remasterizado 2007
+              </p>
+            </a>
+          <a href="https://www.youtube.com/watch?v=UPVfQKUHTSc&pp=ygUSdHJhdGFtZSBzdWF2ZW1lbnRl" target="_blank" class="botonesreproductor">
+              <p class="textoBoton">2</p>
+              <img src="./img/album-soda-stereo.jpg" alt="" class="portadaAlbum" />
+              <p class="textoBotonCancion">
+                Trátame Suavemente - Remasterizado 2007
+              </p>
+            </a>
+          <a href="https://www.youtube.com/watch?v=ZNzYr4U7Zs8&pp=ygUWY3VhbmRvIHBhc2UgZWwgdGVtYmxvcg%3D%3D"
+            target="_blank" class="botonesreproductor">
+              <p class="textoBoton">3</p>
+              <img src="./img/album-nada-personal.jpg" alt="" class="portadaAlbum" />
+              <p class="textoBotonCancion">
+                Cuando Pase El Temblor - Remasterizado 2007
+              </p>
+            </a>
+          <a href="https://www.youtube.com/watch?v=Z3L5M7GHAkw&pp=ygUScGVyc2lhbmEgYW1lcmljYW5h" target="_blank" class="botonesreproductor">
+              <p class="textoBoton">4</p>
+              <img src="./img/album-signos.jpg" alt="" class="portadaAlbum" />
+              <p class="textoBotonCancion">
+                Persiana Americana - Remasterizado 2007
+              </p>
+            </a>
+          <a href="https://www.youtube.com/watch?v=ko24BZXdK8c&pp=ygUNbmFkYSBwZXJzb25hbA%3D%3D" target="_blank" class="botonesreproductor">
+              <p class="textoBoton">5</p>
+              <img src="./img/album-nada-personal.jpg" alt="" class="portadaAlbum" />
+              <p class="textoBotonCancion">
+                Nada Personal - Remasterizado 2007
+              </p>
+            </a>
+          <a href="https://www.youtube.com/watch?v=lGptyREttJ4&pp=ygUIcHJvZnVnb3M%3D" target="_blank" class="botonesreproductor">
+              <p class="textoBoton">6</p>
+              <img src="./img/album-signos.jpg" alt="" class="portadaAlbum" />
+              <p class="textoBotonCancion">
+                Prófugos - Remasterizado 2007
+              </p>
+            </a>
+          <a href="https://www.youtube.com/watch?v=AVEDgT_lG60&pp=ygUYZW4gbGEgY2l1ZGFkIGRlIGxhIGZ1cmlh"
+            target="_blank" class="botonesreproductor">
+              <p class="textoBoton">7</p>
+              <img src="./img/album-doble-vida.jpg" alt="" class="portadaAlbum" />
+              <p class="textoBotonCancion">
+                En La Ciudad De La Furia - Remasterizado 2007
+              </p>
+            </a>
+          <a href="https://www.youtube.com/watch?v=qt11aXRwMiA" target="_blank" class="botonesreproductor">
+              <p class="textoBoton">8</p>
+              <img src="./img/album-comfort.jpg" alt="" class="portadaAlbum" />
+              <p class="textoBotonCancion">
+                Té Para 3 - MTV Unplugged
+              </p>
+            </a>
+          <a href="https://www.youtube.com/watch?v=4OvhrzXu4Yo&pp=ygUPZW50cmUgY2FuaWJhbGVz" target="_blank" class="botonesreproductor">
+              <p class="textoBoton">9</p>
+              <img src="./img/album-animal.jpg" alt="" class="portadaAlbum" />
+              <p class="textoBotonCancion">
+                Entre Caníbales - Remasterizado 2007
+              </p>
+            </a>
+          <a href="https://www.youtube.com/watch?v=HBO2nDIYi0E&pp=ygUQem9vbSBzb2RhIHN0ZXJlbw%3D%3D"
+            target="_blank" class="botonesreproductor">
+              <p class="textoBoton">10</p>
+              <img src="./img/album-sueno-stereo.jpg" alt="" class="portadaAlbum" />
+              <p class="textoBotonCancion">
+                Zoom - Remasterizado 2007
+              </p>
+            </a>
+        </div>
+      </div>
+    </section>
+    <!-- DISCOGRAFIA -->
+
+    <section id="Discografía">
+      <div data-aos="fade-down" data-aos-duration="300">
+        <h2>Discografía</h2>
+        <div class="sec-discos">
+          <div class="album-img">
+            <div class="info-disco">
+              <h3>Soda Stereo</h3>
+              <p><span>Publicación</span> 27 de Agosto de 1984</p>
+              <p><span>Duración</span> 34:35 </p>
+            </div>
+            <img src="./img/album-soda-stereo.jpg" alt="soda-stereo.png" />
+          </div>
+          <div class="album-img">
+            <div class="info-disco">
+              <h3>Nada Personal</h3>
+              <p><span>Publicación</span> 21 de Noviembre 1985</p>
+              <p><span>Duración</span> 39:51 </p>
+            </div>
+            <img src="./img/album-nada-personal.jpg" alt="nada-personal.png" />
+
+          </div>
+          <div class="album-img">
+            <div class="info-disco">
+              <h3>Signos</h3>
+              <p><span>Publicación</span> 10 de Noviembre 1986</p>
+              <p><span>Duración</span> 40:54 </p>
+            </div>
+            <img src="./img/album-signos.jpg" alt="signos.jpg" />
+
+
+          </div>
+
+          <div class="album-img">
+            <div class="info-disco">
+              <h3>Doble Vida</h3>
+              <p><span>Publicación</span> 15 de Septiembre de 1988</p>
+              <p><span>Duración</span> 42:28 </p>
+            </div>
+            <img src="./img/album-doble-vida.jpg" alt="doble-vida.jpg" />
+
+
+          </div>
+          <div class="album-img">
+            <div class="info-disco">
+              <h3>Canción Animal</h3>
+              <p><span>Publicación</span> 7 de Agosto de 1990</p>
+              <p><span>Duración</span> 41:24 </p>
+            </div>
+            <img src="./img/album-animal.jpg" alt="album-animal.jpg" />
+
+
+          </div>
+          <div class="album-img">
+            <div class="info-disco">
+              <h3>Dynamo</h3>
+              <p><span>Publicación</span> 26 de Octubre de 1992</p>
+              <p><span>Duración</span> 56:11 </p>
+            </div>
+            <img src="./img/album-dynamo.jpg" alt="dynamo.jpg" />
+
+
+          </div>
+          <div class="album-img">
+            <div class="info-disco">
+              <h3>Sueño Stereo</h3>
+              <p><span>Publicación</span> 29 de Junio de 1995</p>
+              <p><span>Duración</span> 53:08 </p>
+            </div>
+            <img src="./img/album-sueno-stereo.jpg" alt="sueno-stereo.jpg" />
+
+          </div>
+          <div class="album-img">
+            <div class="info-disco">
+              <h3>Comfort y Música para Volar</h3>
+              <p><span>Publicación</span> 25 de Septiembre de 1996</p>
+              <p><span>Duración</span> 51:45 </p>
+            </div>
+            <img src="./img/album-comfort.jpg" alt="" />
+
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tienda -->
+
+    <section id="Tienda">
+
+      <div class="container" data-aos="fade-down" data-aos-duration="300">
+        <div class="row">
+          <div class="col-md-12">
+            <h2>Tienda</h2>
+            <div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false">
+              <div class="carousel-inner">
+                <!-- Produto: Remera -->
+                <div class="carousel-item active">
+                  <div class="row">
+
+                    <div class="col-md-4">
+                      <div class="card">
+                        <img src="./img/remera1.jpg.webp" class="card-img-top" alt="Remera" />
+                        <div class="card-body">
+                          <h5 class="card-title">$ 12.000</h5>
+                          <p class="card-text">Remera - Soda Stereo</p>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="card">
+                        <img src="./img/remera2.jpg.jpg" class="card-img-top" alt="Remera" />
+                        <div class="card-body">
+                          <h5 class="card-title">$ 12.000</h5>
+                          <p class="card-text">Remera - Doble vida</p>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="card">
+                        <img src="./img/remera3.jpg.webp" class="card-img-top" alt="Remera" />
+                        <div class="card-body">
+                          <h5 class="card-title">$ 12.000</h5>
+                          <p class="card-text">Remera - Me veras volver</p>
+
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                  </div>
+                </div>
+
+                <!-- Produto: Buzo -->
+
+                <div class="carousel-item">
+                  <div class="row">
+
+                    <div class="col-md-4">
+                      <div class="card">
+                        <img src="./img/buzo1.jpg.jpg" class="card-img-top" alt="Buzo" />
+                        <div class="card-body">
+                          <h5 class="card-title">$ 24.000</h5>
+                          <p class="card-text">Buzo - Soda Stereo</p>
+
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="card">
+                        <img src="./img/buzo2.jpg.webp" class="card-img-top" alt="Buzo" />
+                        <div class="card-body">
+                          <h5 class="card-title">$ 24.000</h5>
+                          <p class="card-text">Buzo - Doble vida</p>
+
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="card">
+                        <img src="./img/buzo3.jpg.jpg" class="card-img-top" alt="Buzo" />
+                        <div class="card-body">
+                          <h5 class="card-title">$ 24.000</h5>
+                          <p class="card-text">Buzo - Soda Stereo</p>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- Produto: Gorra -->
+                <div class="carousel-item">
+                  <div class="row">
+
+                    <div class="col-md-4">
+                      <div class="card">
+                        <img src="./img/gorra1.jpg.jpg" class="card-img-top" alt="Gorra" />
+                        <div class="card-body">
+                          <h5 class="card-title">$ 6.900</h5>
+                          <p class="card-text">Gorra - Soda Stereo</p>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="card">
+                        <img src="./img/gorra2.jpg.webp" class="card-img-top" alt="Gorra" />
+                        <div class="card-body">
+                          <h5 class="card-title">$ 7.400</h5>
+                          <p class="card-text">Gorra trucker - Doble vida</p>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="card">
+                        <img src="./img/gorra3.jpg.webp" class="card-img-top" alt="Gorra" />
+                        <div class="card-body">
+                          <h5 class="card-title">$ 7.400</h5>
+                          <p class="card-text">Gorra trucker - Me veras volver</p>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- Produto: Taza -->
+
+                <div class="carousel-item">
+                  <div class="row">
+
+                    <div class="col-md-4">
+                      <div class="card">
+                        <img src="./img/taza1.jpg.jpg" class="card-img-top" alt="Taza" />
+                        <div class="card-body">
+                          <h5 class="card-title">$ 6.800</h5>
+                          <p class="card-text">Taza - Me veras volver</p>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="card">
+                        <img src="./img/taza2.jpg.jpg" class="card-img-top" alt="Taza" />
+                        <div class="card-body">
+                          <h5 class="card-title">$ 6.800</h5>
+                          <p class="card-text">Taza - Doble vida</p>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="card">
+                        <img src="./img/taza3.jpg.jpg" class="card-img-top" alt="Taza" />
+                        <div class="card-body">
+                          <h5 class="card-title">$ 6.800</h5>
+                          <p class="card-text">Taza - Me veras volver</p>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <!-- Produto: Accesorio -->
+                <div class="carousel-item">
+                  <div class="row">
+
+                    <div class="col-md-4">
+                      <div class="card">
+                        <img src="./img/accesorio1.jpg.webp" class="card-img-top" alt="Accesorio" />
+                        <div class="card-body">
+                          <h5 class="card-title">$ 4.700</h5>
+                          <p class="card-text">Mini pack de puás</p>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="card">
+                        <img src="./img/accesorios2.jpg.jpg" class="card-img-top" alt="Accesorio" />
+                        <div class="card-body">
+                          <h5 class="card-title">$ 5.900</h5>
+                          <p class="card-text">Aros 3d - Soda stereo</p>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="card">
+                        <img src="./img/accesorios3.jpg.jpg" class="card-img-top" alt="Accesorio" />
+                        <div class="card-body">
+                          <h5 class="card-title">$ 5.200</h5>
+                          <p class="card-text">Llaveros 3d - Soda stereo</p>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!-- Boton del Carrusel -->
+
+                </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching"
+                  data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching"
+                  data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+    </section>
+
+    <footer>
+      <div class="footcontainer">
+        <img src="./img/logo-footer.png" alt="Soda Stereo" id="logo-footer">
+        <ul>
+          <li><a href="#historia">Historia</a></li>
+          <li><a href="#masescuchadas">Exitos</a></li>
+          <li><a href="#Discografía">Discografía</a></li>
+          <li><a href="#Tienda">Tienda</a></li>
+        </ul>
+        <ul>
+          <li><a href="javascript:mostrar_registro()">Registro</a></li>
+          <li><a href="javascript:abrirLogin()">Iniciar sesión</a></li>
+        </ul>
+      </div>
+      <div id="copyr">© Copyright C.a.C. 4.0 2024. All Rights Reserved</div>
+    </footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script src="./js/script.js"></script>
+  <script>
+    AOS.init();
+  </script>
+</body>
+
+</html>
