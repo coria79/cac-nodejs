@@ -1,0 +1,199 @@
+/* Importación de la fuente desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+/* Variables CSS */
+:root {
+    --bg-color: #EDEDED;               /* Color de fondo general */
+    --primary-color: white;            /* Color principal para texto */
+    --login-bg: #4F4F4F;               /* Color de fondo para el formulario de login */
+    --header-footer-bgcolor: #000000;  /* Color de fondo para header y footer */
+    --placeholder-color: #A5A5A5;      /* Color del placeholder en inputs */
+    --background-label: #383838;       /* Color de fondo para etiquetas */
+    --buttons-login-extra: #8A821C;    /* Color extra para botones de login */
+    --link-hover-color: #c9bb00;       /* Color al hacer hover sobre links */
+    --primary-font: "Plus Jakarta Sans", sans-serif;  /* Fuente principal */
+}
+
+/* Reset de estilos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos para el cuerpo del documento */
+body {
+    padding-top: 6rem;                 /* Espacio superior */
+    background-color: var(--bg-color); /* Aplicación del color de fondo */
+    font-family: var(--primary-font);  /* Aplicación de la fuente principal */
+}
+
+/* Estilos para el encabezado */
+header {
+    width: 100%;
+    background-color: var(--header-footer-bgcolor);
+    color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 3;
+}
+
+/* Estilos para el logo del encabezado */
+.logo-header {
+    width: 64px;
+    display: flex;
+}
+
+/* Estilos para la sección principal */
+#Principal {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 6rem;
+}
+
+/* Estilos para el formulario de inicio de sesión */
+.sec-sesion {
+    width: 450px;
+    border-radius: 20px;
+    padding: 30px 25px;
+    background-color: var(--login-bg);
+    display: flex;
+    align-items: left;
+    flex-direction: column;
+    position: relative;
+}
+
+.sec-sesion h3 {
+    padding: 20px 0 0 5px;
+    text-align: left;
+    color: var(--primary-color);
+}
+
+/* Estilos para los inputs en el formulario */
+.sec-input {
+    height: 40px;
+    margin: 20px 0 10px 0;
+    border-radius: 8px;
+    background-color: var(--background-label);
+    text-indent: 15px;
+    color: var(--bg-color);
+    border: 1px solid transparent;
+}
+
+.sec-input.error {
+    border: 2px solid red;
+}
+
+.sec-input::placeholder {
+    color: var(--placeholder-color);
+    text-align: left;
+}
+
+/* Estilos para el área de registro */
+.registrate {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.registroP {
+    margin-left: 5px;
+    color: var(--bg-color);
+}
+
+.registroP a {
+    color: var(--link-hover-color);
+}
+
+/* Estilos para botones generales */
+.btn-general {
+    height: 40px;
+    border-radius: 10px;
+    margin: 20px 0 10px 0;
+    border: none;
+    background-color: #5e5e5e;
+    color: #fff;
+    font-weight: bolder;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.53);
+}
+
+.btn-general:hover {
+    background-color: #454343;
+}
+
+.btn-general:active {
+    background-color: #000000;
+}
+
+/* Estilos para botones de sesión */
+.btn-sesion {
+    margin: 15px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    color: var(--bg-color);
+    background-color: var(--buttons-login-extra);
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.53);
+}
+
+.btn-sesion:hover {
+    background-color: #c8be2b;
+}
+
+.btn-sesion:active {
+    background-color: #5f5a13;
+}
+
+/* Estilos para el área de información de registro */
+.info-reg {
+    margin: 20px 0 10px 0;
+    background-color: var(--background-label);
+    text-indent: 15px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    color: var(--bg-color);
+}
+
+.info-reg.error {
+    border: 2px solid red;
+}
+
+.info-reg::placeholder {
+    color: var(--placeholder-color);
+    text-align: left;
+}
+
+/* Estilos para etiquetas de registro */
+.registrate label {
+    padding: 25px 0;
+    color: white;
+    font-size: 15px;
+    width: auto;
+}
+
+.registrate label a {
+    color: rgb(255, 237, 0);
+    font-size: 15px;
+    font-weight: bold;
+}
+
+/* Media query para pantallas pequeñas */
+@media only screen and (max-width: 608px) {
+    .nav-container {
+        max-width: 1700px;
+        padding: 1rem 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .logo-header {
+        width: 50px;
+    }
+}

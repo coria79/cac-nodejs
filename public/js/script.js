@@ -249,18 +249,18 @@ emailLogin.addEventListener("change", () => {
 
 const contraLogin = document.getElementById("clave");
 
-const iniciarSesion = document.getElementById("iniciar-sesion").addEventListener("click", (e) => {
-    e.preventDefault();
+const iniciarSesion = document.getElementById("login-button").addEventListener("click", () => {
     let avisoLogin = document.getElementById("avisoLogin");
-    if (contraLogin.value != "" && emailLogin.value) {
+    if (contraLogin.value != "" && emailLogin.value != "") { // Asegúrate de validar ambos campos
         avisoLogin.style.display = "none";
-        IngresoLogin(emailLogin.value);
+        // Llama a IngresoLogin con los valores de email y clave
+        IngresoLogin(emailLogin.value, contraLogin.value); // Pasar también la contraseña
     }
     else {
         avisoLogin.style.display = "block";
         avisoLogin.style.color = "#FFED00";
         avisoLogin.style.textAlign = "left";
-        avisoLogin.innerText = "Por favor, evite dejar campos vacios.";
+        avisoLogin.innerText = "Por favor, evite dejar campos vacíos.";
         if (contraLogin.value == "") {
             contraLogin.classList.add("error");
         } else {
@@ -271,9 +271,7 @@ const iniciarSesion = document.getElementById("iniciar-sesion").addEventListener
         } else {
             emailLogin.classList.remove("error");
         }
-
     }
-
 });
 
 
@@ -338,24 +336,38 @@ function mostrar_bienvenida(user) {
 
 }
 
-function IngresoLogin(email) {
+function IngresoLogin(username, password) {
+    // Cerrar cualquier sesión de login abierta
     cerrar_login();
-    let seccionLoginAdentro = document.getElementById("sectionLogin");
-    seccionLoginAdentro.innerHTML = `
-            <div class="overlay">
-            <section id="inicio-sesion">
-            <div class="sec-sesion" >
-              <a href="javascript:cerrar_ingresoLogin()" id="cerrarLogin"><img src="./img/close.png" alt="Cerrar" class="cerrarLogin"></a>
-                <h4 style="padding: 25px 0; color: white">¡Bienvenid@ ${email}!</h4>
-                
-                
-            </div>
-            </section>
-            </div>`;
+    console.log("valores desde el script.js");
+    console.log(username);
+    console.log(password);
 
-
-
+    // Validar el username y su password usando fetch
+    // Si la validación es exitosa, redirigir a orders.html
+    fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Redirige al usuario a la página de órdenes de compra
+            window.location.href = '/orders.html';
+        } else {
+            // Maneja el caso donde la validación falla, mostrando un mensaje de error
+            alert('Usuario y/o contraseña incorrectos. Intente denuevo.');
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
 }
+
+
 
 function cerrar_ingresoLogin() {
     let seccionLoginAdentro = document.getElementById("sectionLogin");

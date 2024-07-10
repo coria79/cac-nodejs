@@ -52,7 +52,6 @@ body {
 
 header,
 footer {
-    
     width: 100%;
     background-color: var(--header-footer-bgcolor);
     color: var(--primary-color);
@@ -92,7 +91,6 @@ header {
 .logo-header {
     width: 64px;
     display: flex;
-
 }
 
 .nav-container {
@@ -161,17 +159,17 @@ header {
 
 /* -----------------LOGIN--------------------------- */
 
-.nav-container #login-button section#inicio-sesion {
-    visibility: hidden;
-    cursor: default;
-}
-
-.nav-container #login-button:hover section#inicio-sesion {
+.nav-container {
     visibility: visible;
     cursor: default;
 }
 
-.nav-container #login-button section#inicio-sesion:hover .sec-sesion {
+.nav-container:hover section#inicio-sesion {
+    visibility: visible;
+    cursor: default;
+}
+
+.nav-container {
     visibility: visible;
     cursor: default;
 }
@@ -183,17 +181,9 @@ header {
 
 #loginDiv{
     position: absolute;
-    right: 0;
-    visibility: hidden;
+    margin: 1px auto;
+    visibility: visible;
     width: auto;
-}
-
-#loginDiv.active{
-    visibility: visible;
-}
-
-#loginDiv:hover{
-    visibility: visible;
 }
 
 #loginDiv #inicio-sesion {
@@ -554,10 +544,11 @@ input{
     margin: auto auto;
 }
 
-
 /* ------------------ banner ----------------------- */
 #Principal {
     background: linear-gradient(90deg,  var(--secondary-color), #222222);
+    display: flex;
+    justify-content: center;
 }
 
 .contenido-principal-div {
@@ -1194,12 +1185,7 @@ footer {
  width: 50px;
 }
 
-.nav-container #login-button:hover section#inicio-sesion {
-    visibility: hidden;
-    cursor: default;
-}
-
-.nav-container #login-button section#inicio-sesion:hover .sec-sesion {
+.nav-container {
     visibility: hidden;
     cursor: default;
 }
@@ -1401,18 +1387,6 @@ footer{
 .btn-banner {
     margin: auto auto 50px auto;
     max-width: 95%;
-}
-
-#loginDiv{
-    visibility: hidden;
-}
-
-#loginDiv.active{
-    visibility: hidden;
-}
-
-#loginDiv:hover{
-    visibility: hidden;
 }
 
 }
