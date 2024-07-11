@@ -16,10 +16,14 @@ exports.getAllItems = (req, res) => {
 // Función para crear un nuevo ítem
 exports.createItem = (req, res) => {
   const newItem = {
+    
     name: req.body.name,
-    order_id: req.body.order_id,
-    category_id: req.body.category_id,
-    is_available: req.body.is_available
+    price: req.body.price,
+    amount: req.body.amount,
+    is_available: req.body.is_available,
+    image: req.body.image,
+    category_id: req.body.category_id
+
   }; // Obtiene los datos del nuevo ítem desde la solicitud
   // Llama al método create del modelo Item para insertar un nuevo ítem en la base de datos
   Item.create(newItem, (err, result) => {
@@ -31,10 +35,14 @@ exports.createItem = (req, res) => {
 // Función para actualizar un ítem existente
 exports.updateItem = (req, res) => {
   const updatedItem = {
+
     name: req.body.name,
-    order_id: req.body.order_id,
-    category_id: req.body.category_id,
-    is_available: req.body.is_available
+    price: req.body.price,
+    amount: req.body.amount,
+    is_available: req.body.is_available,
+    image: req.body.image,
+    category_id: req.body.category_id
+
   }; // Obtiene los nuevos datos del ítem desde la solicitud
   // Llama al método update del modelo Item para actualizar el ítem con el ID especificado
   Item.update(req.params.id, updatedItem, (err, result) => {

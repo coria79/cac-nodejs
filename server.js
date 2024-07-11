@@ -5,7 +5,7 @@
  * 
  * Utiliza variables de entorno cargadas desde un archivo .env para configurar el puerto del servidor.
  * 
- * Se importa la conexión a la base de datos desde './dbConfig.js' para interactuar con la base de datos MySQL.
+ * Se importa la conexión a la base de datos desde './models/db.js' para interactuar con la base de datos MySQL.
  * 
  * Importa y utiliza diferentes módulos de rutas para gestionar las solicitudes HTTP relacionadas con usuarios, órdenes, ítems, categorías y autenticación.
  * 
@@ -21,8 +21,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-// Importar la conexión de la base de datos desde dbConfig.js
-const db = require('./dbConfig');
+// Importar la conexión de la base de datos desde db.js
+const db = require('./models/db'); // Asegúrate de que la ruta apunte correctamente al archivo db.js
 
 // Importar las rutas de los diferentes módulos
 const userRoutes = require('./routes/userRoutes'); // Rutas para usuarios
@@ -34,6 +34,7 @@ const authRoutes = require('./routes/authRoutes'); // Rutas para autenticación
 const app = express();  // Crear una instancia de Express
 app.use(bodyParser.json());  // Usar body-parser para analizar solicitudes JSON
 
+// Rutas para los diferentes módulos
 app.use('/api/users', userRoutes); // Rutas para usuarios
 app.use('/api/orders', orderRoutes); // Rutas para órdenes
 app.use('/api/items', itemRoutes); // Rutas para ítems
@@ -48,11 +49,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Configurar directorio de vistas estáticas
-app.use(express.static(path.join(__dirname, 'views')));
-
 // Configurar el puerto del servidor
 const PORT = process.env.PORT || 3000;
+
+// Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

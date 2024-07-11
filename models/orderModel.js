@@ -23,8 +23,8 @@ const Order = {
   },
   // Método para actualizar una orden por su ID
   update: (id, order, callback) => {
-    const sql = 'UPDATE orders SET name = ?, user_id = ?, created_at = ? WHERE id = ?'; // Consulta SQL para actualizar una orden por ID
-    db.query(sql, [order.name, order.user_id, order.created_at, id], callback); // Ejecuta la consulta
+    const sql = 'UPDATE orders SET amount = ?, user_id = ?, item_id = ?, created_at = ? WHERE id = ?'; // Consulta SQL para actualizar una orden por ID
+    db.query(sql, [order.amount, order.user_id, order.item_id, order.created_at, id], callback); // Ejecuta la consulta
   },
   // Método para eliminar una orden por su ID
   delete: (id, callback) => {

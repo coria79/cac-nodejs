@@ -30,8 +30,9 @@ exports.getOrdersByUserId = (req, res) => {
 // Función para crear una nueva orden
 exports.createOrder = (req, res) => {
   const newOrder = {
-    name: req.body.name,
+    amount: req.body.amount,
     user_id: req.body.user_id,
+    item_id: req.body.item_id,
     created_at: req.body.created_at
   }; // Obtiene los datos de la nueva orden desde la solicitud
   // Llama al método create del modelo Order para insertar una nueva orden en la base de datos
@@ -44,8 +45,9 @@ exports.createOrder = (req, res) => {
 // Función para actualizar una orden existente
 exports.updateOrder = (req, res) => {
   const updatedOrder = {
-    name: req.body.name,
+    amount: req.body.amount,
     user_id: req.body.user_id,
+    item_id: req.body.item_id,
     created_at: req.body.created_at
   }; // Obtiene los nuevos datos de la orden desde la solicitud
   // Llama al método update del modelo Order para actualizar la orden con el ID especificado
