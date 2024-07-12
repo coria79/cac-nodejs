@@ -21,5 +21,6 @@ exports.login = (req, res) => {
     }
 
     res.status(200).send('Login successful'); // Si las credenciales son correctas, devuelve un mensaje de éxito
+
   });
 };

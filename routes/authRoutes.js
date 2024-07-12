@@ -54,7 +54,8 @@ router.post('/auth/login', (req, res) => {
     }
 
     // Respuesta exitosa si las credenciales son correctas
-    res.json({ success: true, message: 'Inicio de sesión exitoso' });
+    
+    res.json({ success: true, message: 'Inicio de sesión exitoso', id: user.id });
   });
 });
 

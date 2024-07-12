@@ -12,29 +12,21 @@ const Item = {
   },
   // Método para encontrar un item por su ID
   findById: (id, callback) => {
-    //const sql = 'SELECT * FROM items WHERE id = ?'; // Consulta SQL para seleccionar un item por ID
-
-
     const sql = `
-    SELECT items.*, categories.name AS category_name
-    FROM items
-    INNER JOIN categories ON items.category_id = categories.id
-    WHERE items.id = ?
-  `;
-
-
-
+      SELECT items.*, categories.name AS category_name
+      FROM items
+      INNER JOIN categories ON items.category_id = categories.id
+      WHERE items.id = ?
+    `;
     db.query(sql, [id], callback); // Ejecuta la consulta
-
   },
   // Método para obtener todos los items
   findAll: (callback) => {
-    //const sql = 'SELECT * FROM items'; // Consulta SQL para seleccionar todos los items
-    
-    const sql = 'SELECT items.id, items.name, items.price, items.amount, items.is_available, items.image, categories.name AS category_name FROM mydatabase.items JOIN mydatabase.categories ON items.category_id = categories.id';
-
-    
-
+    const sql = `
+      SELECT items.id, items.name, items.price, items.amount, items.is_available, items.image, categories.name AS category_name
+      FROM items
+      JOIN categories ON items.category_id = categories.id
+    `;
     db.query(sql, callback); // Ejecuta la consulta
   },
   // Método para actualizar un item por su ID

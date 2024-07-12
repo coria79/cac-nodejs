@@ -8,6 +8,9 @@ const router = express.Router(); // Crea un objeto Router de Express
 // Ruta GET para obtener todas las órdenes (/api/orders/)
 router.get('/', orderController.getAllOrders);
 
+// Ruta GET para obtener órdenes por ID de usuario (/api/orders/user/:userId)
+router.get('/user/:userId', orderController.getOrdersByUserId);
+
 // Ruta POST para crear una nueva orden (/api/orders/)
 router.post('/', orderController.createOrder);
 

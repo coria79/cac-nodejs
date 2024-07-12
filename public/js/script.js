@@ -22,6 +22,7 @@ const vecPaises = new Array(
     , "Panamá"
 );
 
+
 function mostrar_registro() {
 
     cerrar_login();
@@ -69,7 +70,6 @@ function mostrar_registro() {
     inputApellido.placeholder = "Apellido";
     inputApellido.className = "info-reg";
 
-
     let inputEmail = document.createElement("input");
     inputEmail.type = "email";
     inputEmail.name = "nuevo-email";
@@ -105,12 +105,7 @@ function mostrar_registro() {
     label.innerText = "Deseo recibir novedades al correo electrónico";
     label.className = "estilos-check";
 
-
-
-
     label.append(inputCheck);
-
-
 
     let divBtnReg = document.createElement("div");
     divBtnReg.className = "btn-reg";
@@ -226,7 +221,6 @@ function mostrar_registro() {
                 inputContra.classList.remove("error");
             }
         }
-
     });
 }
 
@@ -275,7 +269,6 @@ const iniciarSesion = document.getElementById("login-button").addEventListener("
 });
 
 
-
 const expresiones = {
     usuario: /^[a-zA-Z0-9\_\-]{4,16}$/, // Letras, numeros, guion y guion_bajo
     nombre: /^[a-zA-ZÀ-ÿ\s]{1,40}$/, // Letras y espacios, pueden llevar acentos.
@@ -285,15 +278,11 @@ const expresiones = {
 }
 
 
-
-
 function cerrar_registro() {
     document.getElementById("sectionRegistro").innerHTML = "";
     let aRegistrar = document.getElementById("aRegistrar");
     aRegistrar.classList.remove("not-active");
-
 }
-
 
 
 //---------------------------------------------------------------------------
@@ -333,8 +322,8 @@ function mostrar_bienvenida(user) {
     bienvenida.append(divCheck);
     bienvenida.append(p);
     containerOverlay.append(bienvenida);
-
 }
+
 
 function IngresoLogin(username, password) {
     // Cerrar cualquier sesión de login abierta
@@ -356,6 +345,7 @@ function IngresoLogin(username, password) {
     .then(data => {
         if (data.success) {
             // Redirige al usuario a la página de órdenes de compra
+            userId  = data.id;
             window.location.href = '/orders.html';
         } else {
             // Maneja el caso donde la validación falla, mostrando un mensaje de error
@@ -366,7 +356,6 @@ function IngresoLogin(username, password) {
         console.error('Error en la solicitud:', error);
     });
 }
-
 
 
 function cerrar_ingresoLogin() {
@@ -405,14 +394,8 @@ function updatevh() {
 
                 document.body.style.overflow = 'hidden';
             }
-
             menuActivo = !menuActivo;
-
-
         });
-
-
-
 
         for (let i = 0; i < 4; i++) {
             lista[i] = document.getElementById(`lista${i}`);
@@ -431,17 +414,14 @@ function updatevh() {
         document.getElementById("menu").style.visibility = "visible";
         
         loginBTN.addEventListener("mouseover", () => {
-
             loginDiv.classList.add("active");
         },
         );
 
         loginDiv.addEventListener("mouseout", () => {
-
             loginDiv.classList.remove("active");
         },
         );
-
         loginBTN.innerText = "";
     }
 }
@@ -450,21 +430,14 @@ window.addEventListener('resize', updatevh);
 updatevh();
 
 
-
-
-
-
-
 function abrirLogin() {
-
     let seccionLogin = document.getElementById("sectionLogin");
     seccionLogin.innerHTML = `
             <div class="overlay">
             <section id="inicio-sesion">
             <form class="sec-sesion">
               <a href="javascript:cerrar_login()" id="cerrarLogin"><img src="./img/close.png" alt="Cerrar" class="cerrarLogin"></a>
-                <h3>Iniciar sesión</h3>
-                
+                <h3>Iniciar sesión</h3>                
                 <input type="email" name="email" id="emailLoginP" placeholder="Email" class="sec-input">
                 <div id="avisoEmailP"></div>
                 <input type="password" name="clave" id="contraLoginP" placeholder="Contraseña" class="sec-input">
@@ -479,13 +452,9 @@ function abrirLogin() {
                 <input type="submit" id="iniciar-sesion-pop" value="Iniciar sesión" class="btn-general">
                 <div class="registrate">
                     <label for="registro">
-                      ¿No tenes cuenta?
-                      
-                      
-                      <a href="javascript:mostrar_registro()" id="aRegistrar">Registrarse</a>
-                      
-                    </label>
-                    
+                      ¿No tenes cuenta?                                            
+                      <a href="javascript:mostrar_registro()" id="aRegistrar">Registrarse</a>                      
+                    </label>                    
                 </div>
                 <fieldset>
                     <legend>o inicia con</legend>
@@ -539,15 +508,9 @@ function abrirLogin() {
             } else {
                 emailLoginP.classList.remove("error");
             }
-
         }
-
     });
-
-
 }
-
-
 
 
 function cerrar_login() {
@@ -555,5 +518,3 @@ function cerrar_login() {
     seccionLogin.innerHTML = ``;
 
 }
-
-
