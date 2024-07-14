@@ -1,0 +1,2630 @@
+Codo A Codo - NodeJS - Paso A Paso
+
+REQUISITOS
+==========
+
+- La base de datos debe desarrollarse con MySQL,  tener al menos 4 tablas, con al menos 4 diferentes tipos de datos. 
+- Entre las tablas al menos deberá haber una relación “uno a muchos”.
+- A través del servidor levantado con Node y Express se debe poder realizar al menos un tipo de alta. (POST)
+- De la misma forma se debe poder realizar modificaciones de los registros. (PUT)
+- Se debe poder acceder a los registros de la tabla (GET)
+- Se debe poder realizar borrado físico de los datos. (DELETE)
+
+INSTALACIONES NECESARIAS
+========================
+
+- Node.js: https://nodejs.org
+- MySQL: https://dev.mysql.com/downloads/mysql/
+	- Versión instalada: 8.4.1 LTS
+	- MySQL Root Account Password: 1234
+	- Workbench: https://www.mysql.com/products/workbench/
+- Express: https://expressjs.com
+
+CREACIÓN CARPETA DE PROYECTO GITHUB
+===================================
+
+- Nombre de la carpeta de proyecto: cac-nodejs
+- Comando para clonar: git clone https://github.com/coria79/cac-nodejs.git
+
+INICIALIZAR EL PROYECTO
+=======================
+
+- Desde la consola: npm init -y
+
+INSTALAR DEPENDENCIAS
+=====================
+
+- Desde la consola: npm install express mysql2 dotenv
+- Desde la consola: npm install -g nodemon
+- "express" para manejaR las rutas y solicitudes HTTP.
+- "mysql2" cliente de base de datos.
+- "nodemon" para reiniciar la aplicación cuando detecta cambios.
+- "dotenv" para cargar variables de entorno desde un archivo .env
+
+ARCHIVO .GITIGNORE
+==================
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+lib-cov/
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output/
+
+# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
+.grunt/
+
+# Bower dependency directory (https://bower.io/)
+bower_components/
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons (https://nodejs.org/api/addons.html)
+build/Release/
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Snowpack dependency directory (https://snowpack.dev/)
+web_modules/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm/
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variable files
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache/
+.parcel-cache/
+
+# Next.js build output
+.next/
+out/
+
+# Nuxt.js build / generate output
+.nuxt/
+dist/
+
+# Gatsby files
+.cache/
+# Comment in the public line in if your project uses Gatsby and not Next.js
+# https://nextjs.org/blog/next-9-1#public-directory-support
+# public
+
+# vuepress build output
+.vuepress/dist/
+
+# vuepress v2.x temp and cache directory
+.temp/
+.cache/
+
+# Docusaurus cache and generated files
+.docusaurus/
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port/
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test/
+
+# yarn v2
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Additional items from the original suggestion
+package-lock.json
+
+# Logs
+logs/
+*.log
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Temp files
+*.~*
+*.swp
+*.swo
+*~
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+DISEÑO DE LA BASE DE DATOS
+==========================
+
+- Tablas requeridas: users, orders, items, categories
+- Relaciones: un usuario puede tener muchos pedidos (orders). Un pedido puede tener muchos artículos (items). Un artículo puede pertenecer a una categoría (categories).
+
+ACCEDER A MYSQL
+===============
+
+- Desde el workbench crear el nuevo schema
+- Desde el workbench crear la base de datos: CREATE DATABASE mydatabase;
+- (Probar hacerlo desde el cliente mysql) Crear la base de datos: CREATE DATABASE mydatabase;
+- Desde el cliente mysql. Seleccionar la base de datos: USE mydatabase;
+- Desde el cliente mysql. Crear las tablas. Cada tabla por separado.
+
+-- Crear tabla de usuarios
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,  -- Identificador único para cada usuario, se incrementa automáticamente
+  username VARCHAR(255) NOT NULL,      -- Nombre de usuario, no puede ser nulo
+  password VARCHAR(255) NOT NULL,      -- Contraseña del usuario, no puede ser nulo
+  email VARCHAR(255),                  -- Correo electrónico del usuario, puede ser nulo
+  created_at DATE                      -- Fecha de creación del usuario
+);
+
+-- Crear tabla de órdenes
+CREATE TABLE orders (
+  id INT AUTO_INCREMENT PRIMARY KEY,  -- Identificador único para cada orden, se incrementa automáticamente
+  amoun INT,                          -- Cantidad
+  user_id INT NOT NULL,               -- Identificador del usuario que realizó la orden
+  created_at DATE,                    -- Fecha de creación de la orden
+  FOREIGN KEY (user_id) REFERENCES users(id),  -- Llave foránea que referencia al id de la tabla users
+);
+
+-- Crear tabla de ítems
+CREATE TABLE items (
+  id INT AUTO_INCREMENT PRIMARY KEY,  -- Identificador único para cada ítem, se incrementa automáticamente
+  name VARCHAR(255) NOT NULL,         -- Nombre del ítem, no puede ser nulo
+  price DECIMAL(10, 2) NOT NULL,      -- Precio del ítem, no puede ser nulo
+  amount INT NOT NULL,                -- Cantidad solicitada, no puede ser nulo
+  is_available BOOLEAN NOT NULL,      -- Indica si el ítem está disponible o no
+  image VARCHAR(255),                 -- Imagen del producto
+  category_id INT,                    -- Identificador de la categoría a la que pertenece el ítem
+  FOREIGN KEY (category_id) REFERENCES categories(id)  -- Llave foránea que referencia al id de la tabla categories
+);
+
+-- Crear tabla de categorías
+CREATE TABLE categories (
+  id INT AUTO_INCREMENT PRIMARY KEY,  -- Identificador único para cada categoría, se incrementa automáticamente
+  name VARCHAR(255) NOT NULL          -- Nombre de la categoría, no puede ser nulo
+);
+
+
+CREATE TABLE orders_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,  -- Identificador único para cada relación
+  order_id INT NOT NULL,              -- Identificador de la orden
+  item_id INT NOT NULL,               -- Identificador del ítem
+  amount INT NOT NULL,                -- Cantidad del ítem en la orden
+  FOREIGN KEY (order_id) REFERENCES orders(id),  -- Llave foránea que referencia al id de la tabla orders
+  FOREIGN KEY (item_id) REFERENCES items(id)    -- Llave foránea que referencia al id de la tabla items
+);
+
+
+- Para verificar la creación de las tablas se puede usar el comando: show tables;
+- Se debe ver algo similar a esto:
++----------------------+
+| Tables_in_mydatabase |
++----------------------+
+| categories           |
+| items                |
+| orders               |
+| orders_items         |
+| users                |
++----------------------+
+
+CONFIGURAR EXPRESS Y RUTAS BÁSICAS
+==================================
+
+- Archivo server.js
+
+// Archivo server.js
+
+/** 
+ * Este archivo configura y arranca un servidor Express para una aplicación web.
+ * 
+ * Utiliza variables de entorno cargadas desde un archivo .env para configurar el puerto del servidor.
+ * 
+ * Se importa la conexión a la base de datos desde './dbConfig.js' para interactuar con la base de datos MySQL.
+ * 
+ * Importa y utiliza diferentes módulos de rutas para gestionar las solicitudes HTTP relacionadas con usuarios, órdenes, ítems, categorías y autenticación.
+ * 
+ * Además, sirve archivos estáticos desde las carpetas 'public' y 'views' y configura una ruta para servir un archivo HTML principal.
+ * 
+ * Escucha en el puerto especificado por la variable de entorno PORT, o por defecto en el puerto 3000.
+ * Una vez iniciado, imprime un mensaje en la consola indicando en qué puerto está corriendo el servidor.
+ */
+
+// Cargar variables de entorno desde el archivo .env
+require('dotenv').config();
+const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
+
+// Importar la conexión de la base de datos desde dbConfig.js
+const db = require('./dbConfig');
+
+// Importar las rutas de los diferentes módulos
+const userRoutes = require('./routes/userRoutes'); // Rutas para usuarios
+const orderRoutes = require('./routes/orderRoutes'); // Rutas para órdenes
+const itemRoutes = require('./routes/itemRoutes'); // Rutas para ítems
+const categoryRoutes = require('./routes/categoryRoutes'); // Rutas para categorías
+const authRoutes = require('./routes/authRoutes'); // Rutas para autenticación
+
+const app = express();  // Crear una instancia de Express
+app.use(bodyParser.json());  // Usar body-parser para analizar solicitudes JSON
+
+app.use('/api/users', userRoutes); // Rutas para usuarios
+app.use('/api/orders', orderRoutes); // Rutas para órdenes
+app.use('/api/items', itemRoutes); // Rutas para ítems
+app.use('/api/categories', categoryRoutes); // Rutas para categorías
+app.use('/api', authRoutes); // Rutas para autenticación
+
+// Servir archivos estáticos desde la carpeta 'public'
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Ruta para servir el archivo HTML principal
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Configurar directorio de vistas estáticas
+app.use(express.static(path.join(__dirname, 'views')));
+
+// Configurar el puerto del servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+CONFIGURAR CONEXIÓN A BASE DE DATOS
+===================================
+
+- Archivo dbConfig.js
+
+// Archivo dbConfig.js
+
+/**
+* 
+* Este archivo configura la conexión a la base de datos MySQL utilizando variables de entorno.
+*
+* Se utiliza la librería mysql2 para establecer la conexión. Las variables de entorno necesarias son:
+*
+* DB_HOST: dirección del host de la base de datos.
+* DB_USER: nombre de usuario para acceder a la base de datos.
+* DB_PASSWORD: contraseña del usuario de la base de datos.
+* DB_NAME: nombre de la base de datos a la que se desea conectar.
+* DB_PORT: puerto en el cual se encuentra disponible la base de datos.
+*
+* Si la conexión es exitosa, se imprime un mensaje de éxito en la consola.
+* Si hay algún error durante la conexión, se maneja el error y se imprime en la consola.
+* La conexión exportada se puede utilizar en otros módulos para interactuar con la base de datos.
+*
+*/
+
+const mysql = require('mysql2');
+require('dotenv').config();
+
+// Crear conexión a la base de datos utilizando las variables de entorno
+const db = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
+});
+
+// Conectar a la base de datos y manejar errores de conexión
+db.connect((err) => {
+  if (err) {
+    console.error('Error connecting to the database:', err);
+    return;  // Salir si hay un error de conexión
+  }
+  console.log('Connected to the MySQL database');  // Mensaje de éxito
+});
+
+// Exportar la conexión de la base de datos para usarla en otros módulos
+module.exports = db;
+
+CONFIGURAR VARIABLES DE ENTORNO
+===============================
+
+- Archivo ".env"
+
+# Archivo .env
+
+# Dirección del host de la base de datos
+DB_HOST=localhost
+
+# Nombre de usuario para la base de datos
+DB_USER=root
+
+# Contraseña del usuario de la base de datos
+DB_PASSWORD=password
+
+# Nombre de la base de datos
+DB_NAME=mydatabase
+
+# Puerto de la base de datos MySQL
+PORT=3000
+
+CONFIGURACIÓN DE BASE DE DATOS
+==============================
+
+- Archivo "models/db.js"
+
+// Archivo models/db.js
+
+// Este archivo configura y establece una conexión a la base de datos MySQL 
+// utilizando las variables de entorno definidas en el archivo .env.
+// Proporciona una conexión de base de datos que puede ser utilizada por otros módulos en la aplicación.
+
+require('dotenv').config(); // Carga las variables de entorno del archivo .env
+const mysql = require('mysql2'); // Importa el módulo mysql2 para manejar la conexión a la base de datos
+
+// Crea la conexión a la base de datos utilizando las variables de entorno
+const db = mysql.createConnection({
+  host: process.env.DB_HOST,     // Dirección del host de la base de datos
+  user: process.env.DB_USER,     // Nombre de usuario de la base de datos
+  password: process.env.DB_PASSWORD, // Contraseña del usuario de la base de datos
+  database: process.env.DB_NAME  // Nombre de la base de datos
+});
+
+// Conecta a la base de datos y maneja errores de conexión
+db.connect(err => {
+  if (err) throw err; // Lanza un error si no se puede conectar a la base de datos
+  console.log('Database connected!'); // Imprime un mensaje si la conexión es exitosa
+});
+
+module.exports = db; // Exporta la conexión de la base de datos para usarla en otros módulos
+
+CREAR MODELOS
+=============
+
+- Archivo "models/categoryModel.js"
+
+// Archivo models/categoryModel.js
+
+// Importa la conexión de la base de datos
+const db = require('./db');
+
+// Define el modelo Category con métodos para interactuar con la tabla categories en la base de datos
+const Category = {
+  // Método para crear una nueva categoría
+  create: (category, callback) => {
+    const sql = 'INSERT INTO categories SET ?'; // Consulta SQL para insertar una nueva categoría
+    db.query(sql, category, callback); // Ejecuta la consulta
+  },
+  // Método para encontrar una categoría por su ID
+  findById: (id, callback) => {
+    const sql = 'SELECT * FROM categories WHERE id = ?'; // Consulta SQL para seleccionar una categoría por ID
+    db.query(sql, [id], callback); // Ejecuta la consulta
+  },
+  // Método para obtener todas las categorías
+  findAll: (callback) => {
+    const sql = 'SELECT * FROM categories'; // Consulta SQL para seleccionar todas las categorías
+    db.query(sql, callback); // Ejecuta la consulta
+  },
+  // Método para actualizar una categoría por su ID
+  update: (id, category, callback) => {
+    const sql = 'UPDATE categories SET name = ? WHERE id = ?'; // Consulta SQL para actualizar una categoría por ID
+    db.query(sql, [category.name, id], callback); // Ejecuta la consulta
+  },
+  // Método para eliminar una categoría por su ID
+  delete: (id, callback) => {
+    const sql = 'DELETE FROM categories WHERE id = ?'; // Consulta SQL para eliminar una categoría por ID
+    db.query(sql, [id], callback); // Ejecuta la consulta
+  }
+};
+
+// Exporta el modelo Category para usarlo en otros módulos
+module.exports = Category;
+
+- Archivo "models/itemModel.js"
+
+// Archivo models/itemModel.js
+
+// Importa la conexión de la base de datos
+const db = require('./db');
+
+// Define el modelo Item con métodos para interactuar con la tabla items en la base de datos
+const Item = {
+  // Método para crear un nuevo item
+  create: (item, callback) => {
+    const sql = 'INSERT INTO items SET ?'; // Consulta SQL para insertar un nuevo item
+    db.query(sql, item, callback); // Ejecuta la consulta
+  },
+  // Método para encontrar un item por su ID
+  findById: (id, callback) => {
+    const sql = 'SELECT * FROM items WHERE id = ?'; // Consulta SQL para seleccionar un item por ID
+    db.query(sql, [id], callback); // Ejecuta la consulta
+  },
+  // Método para obtener todos los items
+  findAll: (callback) => {
+    const sql = 'SELECT * FROM items'; // Consulta SQL para seleccionar todos los items
+    db.query(sql, callback); // Ejecuta la consulta
+  },
+  // Método para actualizar un item por su ID
+  update: (id, item, callback) => {
+    const sql = 'UPDATE items SET name = ?, price = ?, amount = ?, is_available = ?, image = ?, category_id = ? WHERE id = ?'; // Consulta SQL para actualizar un item por ID
+    db.query(sql, [item.name, item.price, item.amount, item.is_available, item.image, item.category_id, id], callback); // Ejecuta la consulta
+  },
+  // Método para eliminar un item por su ID
+  delete: (id, callback) => {
+    const sql = 'DELETE FROM items WHERE id = ?'; // Consulta SQL para eliminar un item por ID
+    db.query(sql, [id], callback); // Ejecuta la consulta
+  }
+};
+
+// Exporta el modelo Item para usarlo en otros módulos
+module.exports = Item;
+
+- Archivo "models/orderModel.js"
+
+// Archivo models/orderModel.js
+// El modelo orderModel.js maneja las consultas SQL específicas para las órdenes en la base de datos.
+
+// Importa la conexión de la base de datos
+const db = require('./db');
+
+// Define el modelo Order con métodos para interactuar con la tabla orders en la base de datos
+const Order = {
+  // Método para crear una nueva orden
+  create: (order, callback) => {
+    const sql = 'INSERT INTO orders SET ?'; // Consulta SQL para insertar una nueva orden
+    db.query(sql, order, callback); // Ejecuta la consulta
+  },
+  // Método para encontrar una orden por su ID
+  findById: (id, callback) => {
+    const sql = 'SELECT * FROM orders WHERE id = ?'; // Consulta SQL para seleccionar una orden por ID
+    db.query(sql, [id], callback); // Ejecuta la consulta
+  },
+  // Método para obtener todas las órdenes
+  findAll: (callback) => {
+    const sql = 'SELECT * FROM orders'; // Consulta SQL para seleccionar todas las órdenes
+    db.query(sql, callback); // Ejecuta la consulta
+  },
+  // Método para actualizar una orden por su ID
+  update: (id, order, callback) => {
+    const sql = 'UPDATE orders SET amount = ?, user_id = ?, item_id = ?, created_at = ? WHERE id = ?'; // Consulta SQL para actualizar una orden por ID
+    db.query(sql, [order.amount, order.user_id, order.item_id, order.created_at, id], callback); // Ejecuta la consulta
+  },
+  // Método para eliminar una orden por su ID
+  delete: (id, callback) => {
+    const sql = 'DELETE FROM orders WHERE id = ?'; // Consulta SQL para eliminar una orden por ID
+    db.query(sql, [id], callback); // Ejecuta la consulta
+  }
+};
+
+// Exporta el modelo Order para usarlo en otros módulos
+module.exports = Order;
+
+
+- Archivo "models/userModel.js"
+
+// userModel.js
+
+// Importa la conexión de la base de datos
+const db = require('./db');
+
+// Define el modelo User con métodos para interactuar con la tabla users en la base de datos
+const User = {
+  // Método para crear un nuevo usuario
+  create: (user, callback) => {
+    const sql = 'INSERT INTO users SET ?'; // Consulta SQL para insertar un nuevo usuario
+    db.query(sql, user, callback); // Ejecuta la consulta
+  },
+
+  // Método para actualizar un usuario por su ID
+  update: (userId, user, callback) => {
+    const sql = 'UPDATE users SET username = ?, password = ? WHERE id = ?'; // Consulta SQL para actualizar un usuario por ID
+    db.query(sql, [user.username, user.password, userId], callback); // Ejecuta la consulta
+  },
+
+  // Método para eliminar un usuario por su ID
+  delete: (userId, callback) => {
+    const sql = 'DELETE FROM users WHERE id = ?'; // Consulta SQL para eliminar un usuario por ID
+    db.query(sql, [userId], callback); // Ejecuta la consulta
+  },
+
+  // Método para encontrar un usuario por su ID
+  findById: (userId, callback) => {
+    const sql = 'SELECT * FROM users WHERE id = ?'; // Consulta SQL para seleccionar un usuario por ID
+    db.query(sql, [userId], (err, result) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+      if (result.length) {
+        callback(null, result[0]);
+      } else {
+        callback({ message: 'User not found' }, null);
+      }
+    });
+  },
+
+  // Método para obtener todos los usuarios
+  findAll: (callback) => {
+    const sql = 'SELECT * FROM users'; // Consulta SQL para seleccionar todos los usuarios
+    db.query(sql, callback); // Ejecuta la consulta
+  }
+};
+
+// Exporta el modelo User para usarlo en otros módulos
+module.exports = User;
+
+
+// Exporta el modelo User para usarlo en otros módulos
+module.exports = User;
+
+CREAR CONTROLADORES
+===================
+
+- Archivo "routes/authController.js"
+
+// Archivo authController.js
+// El controlador authController.js maneja las funciones relacionadas con la autenticación de usuarios.
+
+// Importa el modelo User para interactuar con la base de datos de usuarios
+const User = require('../models/userModel');
+
+// Función para realizar el inicio de sesión de un usuario
+exports.login = (req, res) => {
+  const { username, password } = req.body; // Obtiene el nombre de usuario y contraseña desde la solicitud
+
+  // Busca un usuario por su nombre de usuario en la base de datos
+  User.findByUsername(username, (err, result) => {
+    if (err) throw err; // Maneja errores durante la consulta a la base de datos
+
+    if (result.length === 0) return res.status(400).send('User not found'); // Si no se encuentra el usuario, devuelve un mensaje de error
+
+    const user = result[0]; // Obtiene el primer resultado (debería ser único según el nombre de usuario)
+    if (user.password !== password) {
+      // Compara la contraseña ingresada con la contraseña almacenada en la base de datos
+      return res.status(400).send('Invalid password'); // Si las contraseñas no coinciden, devuelve un mensaje de error
+    }
+
+    res.status(200).send('Login successful'); // Si las credenciales son correctas, devuelve un mensaje de éxito
+  });
+};
+
+- Archivo "controllers/categoryController.js"
+
+// Archivo categoryController.js
+// El controlador categoryController.js maneja las funciones CRUD para las categorías.
+
+// Importa el modelo Category para interactuar con la base de datos de categorías
+const Category = require('../models/categoryModel');
+
+// Función para obtener todas las categorías
+exports.getAllCategories = (req, res) => {
+  // Llama al método findAll del modelo Category para obtener todas las categorías
+  Category.findAll((err, result) => {
+    if (err) throw err; // Maneja errores durante la consulta a la base de datos
+    res.json(result); // Devuelve todas las categorías en formato JSON
+  });
+};
+
+// Función para crear una nueva categoría
+exports.createCategory = (req, res) => {
+  const newCategory = { name: req.body.name }; // Obtiene el nombre de la categoría desde la solicitud
+  // Llama al método create del modelo Category para insertar una nueva categoría en la base de datos
+  Category.create(newCategory, (err, result) => {
+    if (err) throw err; // Maneja errores durante la inserción en la base de datos
+    res.json(result); // Devuelve el resultado de la inserción en formato JSON
+  });
+};
+
+// Función para actualizar una categoría existente
+exports.updateCategory = (req, res) => {
+  const updatedCategory = { name: req.body.name }; // Obtiene el nuevo nombre de la categoría desde la solicitud
+  // Llama al método update del modelo Category para actualizar la categoría con el ID especificado
+  Category.update(req.params.id, updatedCategory, (err, result) => {
+    if (err) throw err; // Maneja errores durante la actualización en la base de datos
+    res.json(result); // Devuelve el resultado de la actualización en formato JSON
+  });
+};
+
+// Función para eliminar una categoría existente
+exports.deleteCategory = (req, res) => {
+  // Llama al método delete del modelo Category para eliminar la categoría con el ID especificado
+  Category.delete(req.params.id, (err, result) => {
+    if (err) throw err; // Maneja errores durante la eliminación en la base de datos
+    res.json(result); // Devuelve el resultado de la eliminación en formato JSON
+  });
+};
+
+// Función para obtener una categoría por su ID
+exports.getCategoryById = (req, res) => {
+  // Llama al método findById del modelo Category para obtener la categoría con el ID especificado
+  Category.findById(req.params.id, (err, result) => {
+    if (err) throw err; // Maneja errores durante la consulta a la base de datos
+    res.json(result); // Devuelve la categoría encontrada en formato JSON
+  });
+};
+
+- Archivo "controllers/itemController.js
+
+// Archivo itemController.js
+// El controlador itemController.js maneja las funciones CRUD para los ítems.
+
+// Importa el modelo Item para interactuar con la base de datos de ítems
+const Item = require('../models/itemModel');
+
+// Función para obtener todos los ítems
+exports.getAllItems = (req, res) => {
+  // Llama al método findAll del modelo Item para obtener todos los ítems
+  Item.findAll((err, result) => {
+    if (err) throw err; // Maneja errores durante la consulta a la base de datos
+    res.json(result); // Devuelve todos los ítems en formato JSON
+  });
+};
+
+// Función para crear un nuevo ítem
+exports.createItem = (req, res) => {
+  const newItem = {
+    
+    name: req.body.name,
+    price: req.body.price,
+    amount: req.body.amount,
+    is_available: req.body.is_available,
+    image: req.body.image,
+    category_id: req.body.category_id
+
+  }; // Obtiene los datos del nuevo ítem desde la solicitud
+  // Llama al método create del modelo Item para insertar un nuevo ítem en la base de datos
+  Item.create(newItem, (err, result) => {
+    if (err) throw err; // Maneja errores durante la inserción en la base de datos
+    res.json(result); // Devuelve el resultado de la inserción en formato JSON
+  });
+};
+
+// Función para actualizar un ítem existente
+exports.updateItem = (req, res) => {
+  const updatedItem = {
+
+    name: req.body.name,
+    price: req.body.price,
+    amount: req.body.amount,
+    is_available: req.body.is_available,
+    image: req.body.image,
+    category_id: req.body.category_id
+
+  }; // Obtiene los nuevos datos del ítem desde la solicitud
+  // Llama al método update del modelo Item para actualizar el ítem con el ID especificado
+  Item.update(req.params.id, updatedItem, (err, result) => {
+    if (err) throw err; // Maneja errores durante la actualización en la base de datos
+    res.json(result); // Devuelve el resultado de la actualización en formato JSON
+  });
+};
+
+// Función para eliminar un ítem existente
+exports.deleteItem = (req, res) => {
+  // Llama al método delete del modelo Item para eliminar el ítem con el ID especificado
+  Item.delete(req.params.id, (err, result) => {
+    if (err) throw err; // Maneja errores durante la eliminación en la base de datos
+    res.json(result); // Devuelve el resultado de la eliminación en formato JSON
+  });
+};
+
+// Función para obtener un ítem por su ID
+exports.getItemById = (req, res) => {
+  // Llama al método findById del modelo Item para obtener el ítem con el ID especificado
+  Item.findById(req.params.id, (err, result) => {
+    if (err) throw err; // Maneja errores durante la consulta a la base de datos
+    res.json(result); // Devuelve el ítem encontrado en formato JSON
+  });
+};
+
+- Archivo "controllers/orderController.js"
+
+// Archivo orderController.js
+// El controlador orderController.js maneja las solicitudes HTTP relacionadas con las órdenes, utilizando el modelo Order para interactuar con la base de datos.
+
+// Importa el modelo Order para interactuar con la base de datos de órdenes
+const Order = require('../models/orderModel');
+
+// Función para obtener todas las órdenes
+exports.getAllOrders = (req, res) => {
+  // Llama al método findAll del modelo Order para obtener todas las órdenes
+  Order.findAll((err, result) => {
+    if (err) throw err; // Maneja errores durante la consulta a la base de datos
+    res.json(result); // Devuelve todas las órdenes en formato JSON
+  });
+};
+
+// Función para obtener órdenes por ID de usuario
+exports.getOrdersByUserId = (req, res) => {
+  const userId = req.params.userId;
+  // Llama al método getOrdersByUserId del modelo Order para obtener órdenes específicas de un usuario
+  Order.getOrdersByUserId(userId, (err, orders) => {
+    if (err) {
+      console.log(err); // Registra errores en la consola
+      res.status(500).json({ error: 'Internal Server Error' }); // Devuelve un error de servidor en caso de error
+      return;
+    }
+    res.json(orders); // Devuelve las órdenes del usuario en formato JSON
+  });
+};
+
+// Función para crear una nueva orden
+exports.createOrder = (req, res) => {
+  const newOrder = {
+    amount: req.body.amount,
+    user_id: req.body.user_id,
+    item_id: req.body.item_id,
+    created_at: req.body.created_at
+  }; // Obtiene los datos de la nueva orden desde la solicitud
+  // Llama al método create del modelo Order para insertar una nueva orden en la base de datos
+  Order.create(newOrder, (err, result) => {
+    if (err) throw err; // Maneja errores durante la inserción en la base de datos
+    res.json(result); // Devuelve el resultado de la inserción en formato JSON
+  });
+};
+
+// Función para actualizar una orden existente
+exports.updateOrder = (req, res) => {
+  const updatedOrder = {
+    amount: req.body.amount,
+    user_id: req.body.user_id,
+    item_id: req.body.item_id,
+    created_at: req.body.created_at
+  }; // Obtiene los nuevos datos de la orden desde la solicitud
+  // Llama al método update del modelo Order para actualizar la orden con el ID especificado
+  Order.update(req.params.id, updatedOrder, (err, result) => {
+    if (err) throw err; // Maneja errores durante la actualización en la base de datos
+    res.json(result); // Devuelve el resultado de la actualización en formato JSON
+  });
+};
+
+// Función para eliminar una orden existente
+exports.deleteOrder = (req, res) => {
+  // Llama al método delete del modelo Order para eliminar la orden con el ID especificado
+  Order.delete(req.params.id, (err, result) => {
+    if (err) throw err; // Maneja errores durante la eliminación en la base de datos
+    res.json(result); // Devuelve el resultado de la eliminación en formato JSON
+  });
+};
+
+// Función para obtener una orden por su ID
+exports.getOrderById = (req, res) => {
+  // Llama al método findById del modelo Order para obtener la orden con el ID especificado
+  Order.findById(req.params.id, (err, result) => {
+    if (err) throw err; // Maneja errores durante la consulta a la base de datos
+    res.json(result); // Devuelve la orden encontrada en formato JSON
+  });
+};
+
+- Archivo "controllers/userController.js"
+
+// userController.js
+
+// Importa el modelo User para interactuar con la base de datos de usuarios
+const User = require('../models/userModel');
+
+// Función para obtener todos los usuarios
+exports.getAllUsers = (req, res) => {
+  User.findAll((err, users) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ error: 'Internal Server Error' });
+      return;
+    }
+    res.json(users);
+  });
+};
+
+// Función para crear un nuevo usuario
+exports.createUser = (req, res) => {
+  const newUser = { username: req.body.username, password: req.body.password }; // Obtiene los datos del nuevo usuario desde la solicitud
+  User.create(newUser, (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ error: 'Internal Server Error' });
+      return;
+    }
+    res.json(result);
+  });
+};
+
+// Función para actualizar un usuario existente
+exports.updateUser = (req, res) => {
+  const updatedUser = { username: req.body.username, password: req.body.password }; // Obtiene los datos actualizados del usuario desde la solicitud
+  User.update(req.params.id, updatedUser, (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ error: 'Internal Server Error' });
+      return;
+    }
+    res.json(result);
+  });
+};
+
+// Función para eliminar un usuario existente
+exports.deleteUser = (req, res) => {
+  User.delete(req.params.id, (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ error: 'Internal Server Error' });
+      return;
+    }
+    res.json(result);
+  });
+};
+
+// Función para obtener un usuario por su ID
+exports.getUserById = (req, res) => {
+  User.findById(req.params.id, (err, user) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ error: 'Internal Server Error' });
+      return;
+    }
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+    res.json(user);
+  });
+};
+
+CREAR RUTAS
+===========
+
+- Archivo "routes/authRoutes.js"
+
+/** 
+ * 
+ * Este archivo define las rutas relacionadas con la autenticación de usuarios en la aplicación.
+ * utilizando Express y el controlador authController.
+ * 
+ * Utiliza Express para manejar las solicitudes HTTP POST para iniciar sesión y registrar usuarios.
+ * 
+ * Importa la conexión de la base de datos desde '../dbConfig.js' para interactuar con la base de datos MySQL.
+ * 
+ * La ruta POST '/auth/login' permite a los usuarios iniciar sesión verificando las credenciales en la base de datos.
+ * - Se espera recibir un objeto JSON con 'username' y 'password'.
+ * - Se realiza una consulta a la base de datos para verificar la existencia del usuario y la validez de la contraseña.
+ * - Retorna un mensaje JSON indicando el éxito o fallo del inicio de sesión.
+ * 
+ * La ruta POST '/register' permite registrar nuevos usuarios.
+ * - Se espera recibir un objeto JSON con 'username' y 'password'.
+ * - Verifica si el usuario ya existe en la base de datos antes de realizar el registro.
+ * - Inserta un nuevo usuario en la base de datos y retorna un mensaje JSON indicando el éxito o fallo del registro.
+ * 
+ * Todas las respuestas se devuelven en formato JSON con el código de estado correspondiente.
+ * 
+ * Exporta el enrutador para ser utilizado por el servidor principal de la aplicación.
+ * 
+ */
+
+const express = require('express');
+const router = express.Router();
+require('dotenv').config();
+
+// Importar la conexión de la base de datos desde dbConfig.js
+const db = require('../dbConfig');
+
+// Ruta para manejar el inicio de sesión de usuarios
+router.post('/auth/login', (req, res) => {
+  const { username, password } = req.body;
+
+  // Consulta SQL para buscar el usuario por nombre de usuario
+  const query = 'SELECT * FROM users WHERE username = ?';
+  db.query(query, [username], (err, results) => {
+    if (err) {
+      // Manejar error en caso de falla de la consulta
+      return res.status(500).json({ success: false, message: 'Error en el servidor' });
+    }
+    
+    // Verificar si no se encontraron resultados (usuario no existe)
+    if (results.length === 0) {
+      return res.status(401).json({ success: false, message: 'Username o contraseña incorrectos' });
+    }
+
+    // Comparar la contraseña ingresada con la contraseña almacenada en la base de datos
+    const user = results[0];
+    if (password !== user.password) {
+      return res.status(401).json({ success: false, message: 'Username o contraseña incorrectos' });
+    }
+
+    // Respuesta exitosa si las credenciales son correctas
+    res.json({ success: true, message: 'Inicio de sesión exitoso' });
+  });
+});
+
+// Ruta para registrar un nuevo usuario
+router.post('/register', (req, res) => {
+  const { username, password } = req.body;
+
+  // Consulta SQL para verificar si el usuario ya existe
+  const checkUserQuery = 'SELECT * FROM users WHERE username = ?';
+  db.query(checkUserQuery, [username], (err, results) => {
+    if (err) {
+      // Manejar error en caso de falla de la consulta
+      return res.status(500).json({ success: false, message: 'Error en el servidor' });
+    }
+
+    // Verificar si ya existe un usuario con el mismo nombre de usuario
+    if (results.length > 0) {
+      return res.status(400).json({ success: false, message: 'El usuario ya existe' });
+    }
+
+    // Insertar nuevo usuario en la base de datos
+    const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
+    db.query(query, [username, password], (err, results) => {
+      if (err) {
+        // Manejar error en caso de falla al insertar el nuevo usuario
+        return res.status(500).json({ success: false, message: 'Error en el servidor' });
+      }
+      // Respuesta exitosa al registrar un nuevo usuario
+      res.status(201).json({ success: true, message: 'Usuario registrado con éxito' });
+    });
+  });
+});
+
+// Exporta el módulo para que pueda ser utilizado por ejemplo por server.js
+// Exporta el router para que pueda ser utilizado por la aplicación Express
+module.exports = router;
+
+- Archivo "routes/categoryRoutes.js"
+
+// Archivo routes/categoryRoutes.js
+// Este archivo define las rutas relacionadas con las categorías utilizando Express y el controlador categoryController.
+
+const express = require('express'); // Importa Express para definir las rutas
+const categoryController = require('../controllers/categoryController'); // Importa el controlador categoryController que maneja las operaciones CRUD de las categorías
+const router = express.Router(); // Crea un objeto Router de Express
+
+// Ruta GET para obtener todas las categorías (/api/categories/)
+router.get('/', categoryController.getAllCategories);
+
+// Ruta POST para crear una nueva categoría (/api/categories/)
+router.post('/', categoryController.createCategory);
+
+// Ruta PUT para actualizar una categoría existente por su ID (/api/categories/:id)
+router.put('/:id', categoryController.updateCategory);
+
+// Ruta DELETE para eliminar una categoría por su ID (/api/categories/:id)
+router.delete('/:id', categoryController.deleteCategory);
+
+// Ruta GET para obtener una categoría por su ID (/api/categories/:id)
+router.get('/:id', categoryController.getCategoryById);
+
+module.exports = router; // Exporta el router para que pueda ser utilizado por la aplicación Express
+
+- Archivo "routes/itemRoutes.js"
+
+// Archivo itemRoutes.js
+// Este archivo define las rutas relacionadas con los ítems utilizando Express y el controlador itemController.
+
+const express = require('express'); // Importa Express para definir las rutas
+const itemController = require('../controllers/itemController'); // Importa el controlador itemController que maneja las operaciones CRUD de los ítems
+const router = express.Router(); // Crea un objeto Router de Express
+
+// Ruta GET para obtener todos los ítems (/api/items/)
+router.get('/', itemController.getAllItems);
+
+// Ruta POST para crear un nuevo ítem (/api/items/)
+router.post('/', itemController.createItem);
+
+// Ruta PUT para actualizar un ítem existente por su ID (/api/items/:id)
+router.put('/:id', itemController.updateItem);
+
+// Ruta DELETE para eliminar un ítem por su ID (/api/items/:id)
+router.delete('/:id', itemController.deleteItem);
+
+// Ruta GET para obtener un ítem por su ID (/api/items/:id)
+router.get('/:id', itemController.getItemById);
+
+module.exports = router; // Exporta el router para que pueda ser utilizado por la aplicación Express
+
+
+- Archivo "routes/orderRoutes.js"
+
+// Archivo orderRoutes.js
+// Este archivo define las rutas relacionadas con las órdenes utilizando Express y el controlador orderController.
+
+const express = require('express'); // Importa Express para definir las rutas
+const orderController = require('../controllers/orderController'); // Importa el controlador orderController que maneja las operaciones CRUD de las órdenes
+const router = express.Router(); // Crea un objeto Router de Express
+
+// Ruta GET para obtener todas las órdenes (/api/orders/)
+router.get('/', orderController.getAllOrders);
+
+// Ruta POST para crear una nueva orden (/api/orders/)
+router.post('/', orderController.createOrder);
+
+// Ruta PUT para actualizar una orden existente por su ID (/api/orders/:id)
+router.put('/:id', orderController.updateOrder);
+
+// Ruta DELETE para eliminar una orden por su ID (/api/orders/:id)
+router.delete('/:id', orderController.deleteOrder);
+
+// Ruta GET para obtener una orden por su ID (/api/orders/:id)
+router.get('/:id', orderController.getOrderById);
+
+module.exports = router; // Exporta el router para que pueda ser utilizado por la aplicación Express
+
+- Archivo "routes/userRoutes.js"
+
+// Archivo userRoutes.js
+// Este archivo define las rutas relacionadas con los usuarios utilizando Express y el controlador userController.
+
+const express = require('express'); // Importa Express para definir las rutas
+const userController = require('../controllers/userController'); // Importa el controlador userController que maneja las operaciones CRUD de los usuarios
+const router = express.Router(); // Crea un objeto Router de Express
+
+// Ruta GET para obtener todos los usuarios (/api/users/)
+router.get('/', userController.getAllUsers);
+
+// Ruta POST para crear un nuevo usuario (/api/users/)
+router.post('/', userController.createUser);
+
+// Ruta PUT para actualizar un usuario existente por su ID (/api/users/:id)
+router.put('/:id', userController.updateUser);
+
+// Ruta DELETE para eliminar un usuario por su ID (/api/users/:id)
+router.delete('/:id', userController.deleteUser);
+
+// Ruta GET para obtener un usuario por su ID (/api/users/:id)
+router.get('/:id', userController.getUserById);
+
+module.exports = router; // Exporta el router para que pueda ser utilizado por la aplicación Express
+
+ARCHIVOS HTML
+=============
+
+- Archivo public/index.html
+- Archivo public/css/style.css
+- Archivo public/js/script.js
+
+Estos archivos son extensos. Ver directamente del repositorio.
+
+- Archivo public/login.html
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/login.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="icon" href="img/logo.ico">
+  <title>LogIn - Soda Estereo Fan Page</title>
+</head>
+
+<body>
+  <header>
+    <nav class="nav-container">
+      <a href="#top" style="width: 64px; z-index: 1;"><img class="logo-header" src="./img/logo-main.png"
+          alt="soda stereo" /></a>
+      <div id="menu">
+        <button id="menuHamburguesa"></button>
+        <div class="invisible"></div>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <div class="login" id="sectionLogin"></div>
+    <div class="registro" id="sectionRegistro"></div>
+    <div class="bienvenida" id="sectionBienvenida"></div>
+
+    <section id="Principal">
+      <div id="loginDiv">
+        <section id="inicio-sesion">
+          <form class="sec-sesion" id="loginForm">
+            <h3>Iniciar sesión</h3>
+            <input type="email" name="email" id="emailLogin" placeholder="Email" class="sec-input" required>
+            <div id="avisoEmailLogin"></div>
+            <input type="password" name="clave" id="clave" placeholder="Contraseña" class="sec-input" required>
+            <div id="avisoPassLogin"></div>
+            <div id="avisoLogin"></div>
+            <button type="submit" id="login-button" class="btn-general" value="Iniciar sesión">Iniciar sesión</button>
+            <div class="registrate">
+              <span class="registroP">
+                ¿No tenes cuenta?
+                <a href="sigin.html" id="aRegistrar">Registrate</a>
+              </span>
+            </div>
+          </form>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script src="./js/script.js"></script>
+  <script>
+    AOS.init();
+  </script>
+</body>
+
+</html>
+
+- Archivo public/css/login.css
+
+/* Importación de la fuente desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+/* Variables CSS */
+:root {
+    --bg-color: #EDEDED;               /* Color de fondo general */
+    --primary-color: white;            /* Color principal para texto */
+    --login-bg: #4F4F4F;               /* Color de fondo para el formulario de login */
+    --header-footer-bgcolor: #000000;  /* Color de fondo para header y footer */
+    --placeholder-color: #A5A5A5;      /* Color del placeholder en inputs */
+    --background-label: #383838;       /* Color de fondo para etiquetas */
+    --buttons-login-extra: #8A821C;    /* Color extra para botones de login */
+    --link-hover-color: #c9bb00;       /* Color al hacer hover sobre links */
+    --primary-font: "Plus Jakarta Sans", sans-serif;  /* Fuente principal */
+}
+
+/* Reset de estilos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos para el cuerpo del documento */
+body {
+    padding-top: 6rem;                 /* Espacio superior */
+    background-color: var(--bg-color); /* Aplicación del color de fondo */
+    font-family: var(--primary-font);  /* Aplicación de la fuente principal */
+}
+
+/* Estilos para el encabezado */
+header {
+    width: 100%;
+    background-color: var(--header-footer-bgcolor);
+    color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 3;
+}
+
+/* Estilos para el logo del encabezado */
+.logo-header {
+    width: 64px;
+    display: flex;
+}
+
+/* Estilos para la sección principal */
+#Principal {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 6rem;
+}
+
+/* Estilos para el formulario de inicio de sesión */
+.sec-sesion {
+    width: 450px;
+    border-radius: 20px;
+    padding: 30px 25px;
+    background-color: var(--login-bg);
+    display: flex;
+    align-items: left;
+    flex-direction: column;
+    position: relative;
+}
+
+.sec-sesion h3 {
+    padding: 20px 0 0 5px;
+    text-align: left;
+    color: var(--primary-color);
+}
+
+/* Estilos para los inputs en el formulario */
+.sec-input {
+    height: 40px;
+    margin: 20px 0 10px 0;
+    border-radius: 8px;
+    background-color: var(--background-label);
+    text-indent: 15px;
+    color: var(--bg-color);
+    border: 1px solid transparent;
+}
+
+.sec-input.error {
+    border: 2px solid red;
+}
+
+.sec-input::placeholder {
+    color: var(--placeholder-color);
+    text-align: left;
+}
+
+/* Estilos para el área de registro */
+.registrate {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.registroP {
+    margin-left: 5px;
+    color: var(--bg-color);
+}
+
+.registroP a {
+    color: var(--link-hover-color);
+}
+
+/* Estilos para botones generales */
+.btn-general {
+    height: 40px;
+    border-radius: 10px;
+    margin: 20px 0 10px 0;
+    border: none;
+    background-color: #5e5e5e;
+    color: #fff;
+    font-weight: bolder;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.53);
+}
+
+.btn-general:hover {
+    background-color: #454343;
+}
+
+.btn-general:active {
+    background-color: #000000;
+}
+
+/* Estilos para botones de sesión */
+.btn-sesion {
+    margin: 15px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    color: var(--bg-color);
+    background-color: var(--buttons-login-extra);
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.53);
+}
+
+.btn-sesion:hover {
+    background-color: #c8be2b;
+}
+
+.btn-sesion:active {
+    background-color: #5f5a13;
+}
+
+/* Estilos para el área de información de registro */
+.info-reg {
+    margin: 20px 0 10px 0;
+    background-color: var(--background-label);
+    text-indent: 15px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    color: var(--bg-color);
+}
+
+.info-reg.error {
+    border: 2px solid red;
+}
+
+.info-reg::placeholder {
+    color: var(--placeholder-color);
+    text-align: left;
+}
+
+/* Estilos para etiquetas de registro */
+.registrate label {
+    padding: 25px 0;
+    color: white;
+    font-size: 15px;
+    width: auto;
+}
+
+.registrate label a {
+    color: rgb(255, 237, 0);
+    font-size: 15px;
+    font-weight: bold;
+}
+
+/* Media query para pantallas pequeñas */
+@media only screen and (max-width: 608px) {
+    .nav-container {
+        max-width: 1700px;
+        padding: 1rem 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .logo-header {
+        width: 50px;
+    }
+}
+
+- Archivo public/js/script.js
+- Porción del código más importante, a partir de la línea 339
+
+function IngresoLogin(username, password) {
+    // Cerrar cualquier sesión de login abierta
+    cerrar_login();
+
+    // Aquí se valida el username y la clave, usando fetch
+    // Si la validación es exitosa, redirigir a orders.html
+    fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Redirige al usuario a la página de órdenes de compra
+            window.location.href = '/orders.html';
+        } else {
+            // Maneja el caso donde la validación falla, por ejemplo, mostrando un mensaje de error
+            console.log('Error en la validación:', data.message);
+            document.getElementById('avisoLogin').innerText = data.message; // Muestra el mensaje de error en la página
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+    });
+}
+
+- Archivo public/sigin.html
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="icon" href="img/logo.ico">
+  <title>Soda Estereo Fan Page</title>
+</head>
+
+<body>
+  <header>
+    <nav class="nav-container">      
+      <a href="#top" style="width: 64px; z-index: 1;"><img class="logo-header" src="./img/logo-main.png" alt="soda stereo" /></a>
+      <div id="menu">
+        <button id="menuHamburguesa"></button>
+        <div class="invisible"></div>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <div class="login" id="sectionLogin"></div>
+    <div class="registro" id="sectionRegistro"></div>
+    <div class="bienvenida" id="sectionBienvenida"></div>
+    <section id="Principal">
+      <div id="loginDiv">
+        <section id="inicio-sesion">
+            <form class="sec-sesion">
+              <h3>Registrarse</h3>
+              <input type="email" name="email" id="emailLogin" placeholder="Email" class="sec-input">
+              <div id="avisoEmailLogin"></div>
+              <input type="password" name="clave" id="clave" placeholder="Contraseña" class="sec-input">
+              <div id="avisoPassLogin"></div>
+
+              <div id="avisoLogin"></div>
+              <input type="submit" id="iniciar-sesion" value="Registrarse" class="btn-general">
+
+            </form>
+          </section>
+        </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script src="./js/script.js"></script>
+  <script>
+    AOS.init();
+  </script>
+</body>
+
+</html>
+
+- Archivo public/css/style.css
+- En este caso comparte el archivo de estilos de la página index.html
+- Por conveniencia a partir de aquí decidí separar los archivos de una forma más equitativa para que no fueran tantas línes de código.
+
+- Archivo public/orders.html
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/order.css" />
+  <link rel="stylesheet" href="css/login.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="icon" href="img/logo.ico">
+  <title>Soda Estereo Fan Page</title>
+</head>
+<body>
+  <header class="header-login">
+    <nav class="nav-container-login">
+      <a href="index.html" style="width: 64px; z-index: 1;"><img class="logo-header" src="./img/logo-main.png" alt="soda stereo" /></a>
+      <ul>
+        <li><a href="orders.html" id="lista0">Crear Orden De Compra</a></li>
+        <li><a href="orders-list.html" id="lista1">Ver Ordenes De Compra</a></li>
+      </ul>
+      <div id="menu">
+        <button id="menuHamburguesa"></button>
+        <div class="invisible"></div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <div id="products" class="products-container"></div>
+      <div id="cart">
+        <h2>Carrito de Compras</h2>
+        <div id="cart-items"></div>
+        <div id="cart-total"></div>
+        <button id="checkout">Finalizar Compra</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  
+  <script src="./js/order.js"></script>
+  
+  <script>
+    AOS.init();
+  </script>
+</body>
+</html>
+
+- Archivo public/css/order.css
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.products-container {
+  width: 70%;
+  margin-bottom: 20px;
+}
+
+.product {
+  background-color: #4F4F4F;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.product img {
+  width: 128px;
+  height: 128px;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-info p {
+  margin: 5px 0;
+}
+
+#cart {
+  width: 70%;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  border-radius: 5px;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+#checkout {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#checkout:hover {
+  background-color: #218838;
+}
+
+
+.remove-btn, .delete-btn {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.agregarAlCarrito{
+  padding: 2px 4px;
+  border-radius: 5px;
+  background-color: #A5A5A5;
+  color: #8A821C;
+}
+
+.orders-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Define columnas automáticas con un ancho mínimo de 300px */
+  gap: 20px; /* Espacio entre elementos de la grilla */
+}
+
+.order {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.order-info {
+  margin-bottom: 10px;
+}
+
+.order-info p {
+  margin: 5px 0;
+}
+
+.order-items {
+  margin-top: 10px;
+}
+
+.order-item {
+  margin-bottom: 5px;
+}
+
+.edit-btn {
+  display: block;
+  padding: 5px 10px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-btn, .delete-btn{
+  margin: 3px;
+}
+
+.order-edit-container{
+  display: flex;
+  flex-direction: column;
+  margin: 25px;
+}
+
+.order-edit-h2 {
+  display: flex;
+  justify-content: space-around;
+}
+
+.order-id, .order-user, .order-date, .order-item, .order-amount {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#update-order-btn{
+  padding: 3px 6px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+- Archivo public/css/login.css
+
+/* Importación de la fuente desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+/* Variables CSS */
+:root {
+    --bg-color: #EDEDED;               /* Color de fondo general */
+    --primary-color: white;            /* Color principal para texto */
+    --third-color: #FFED00;
+    --login-bg: #4F4F4F;               /* Color de fondo para el formulario de login */
+    --header-footer-bgcolor: #000000;  /* Color de fondo para header y footer */
+    --placeholder-color: #A5A5A5;      /* Color del placeholder en inputs */
+    --background-label: #383838;       /* Color de fondo para etiquetas */
+    --buttons-login-extra: #8A821C;    /* Color extra para botones de login */
+    --link-hover-color: #c9bb00;       /* Color al hacer hover sobre links */
+    --primary-font: "Plus Jakarta Sans", sans-serif;  /* Fuente principal */
+}
+
+/* Reset de estilos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos para el cuerpo del documento */
+body {
+    padding-top: 6rem;                 /* Espacio superior */
+    background-color: var(--bg-color); /* Aplicación del color de fondo */
+    font-family: var(--primary-font);  /* Aplicación de la fuente principal */
+}
+
+/* Estilos para el encabezado */
+.header-login {
+    width: 100%;
+    background-color: var(--header-footer-bgcolor);
+    color: var(--primary-color);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 3;
+}
+
+.nav-container-login {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+/* Estilos para el logo del encabezado */
+.logo-header {
+    width: 64px;
+    display: flex;
+}
+
+.nav-container-login ul li a {
+    color: var(--bg-color);
+    text-decoration: none;
+}
+
+.nav-container-login ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 5px;
+}
+
+.nav-container-login li {
+    margin: 5px;
+    margin-right: 30px;
+}
+
+.nav-container-login ul li a:hover {
+    color: var(--third-color);
+    text-decoration: none;
+}
+
+/* Estilos para la sección principal */
+#Principal {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 6rem;
+}
+
+/* Estilos para el formulario de inicio de sesión */
+.sec-sesion {
+    width: 450px;
+    border-radius: 20px;
+    padding: 30px 25px;
+    background-color: var(--login-bg);
+    display: flex;
+    align-items: left;
+    flex-direction: column;
+    position: relative;
+}
+
+.sec-sesion h3 {
+    padding: 20px 0 0 5px;
+    text-align: left;
+    color: var(--primary-color);
+}
+
+/* Estilos para los inputs en el formulario */
+.sec-input {
+    height: 40px;
+    margin: 20px 0 10px 0;
+    border-radius: 8px;
+    background-color: var(--background-label);
+    text-indent: 15px;
+    color: var(--bg-color);
+    border: 1px solid transparent;
+}
+
+.sec-input.error {
+    border: 2px solid red;
+}
+
+.sec-input::placeholder {
+    color: var(--placeholder-color);
+    text-align: left;
+}
+
+/* Estilos para el área de registro */
+.registrate {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.registroP {
+    margin-left: 5px;
+    color: var(--bg-color);
+}
+
+.registroP a {
+    color: var(--link-hover-color);
+}
+
+/* Estilos para botones generales */
+.btn-general {
+    height: 40px;
+    border-radius: 10px;
+    margin: 20px 0 10px 0;
+    border: none;
+    background-color: #5e5e5e;
+    color: #fff;
+    font-weight: bolder;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.53);
+}
+
+.btn-general:hover {
+    background-color: #454343;
+}
+
+.btn-general:active {
+    background-color: #000000;
+}
+
+/* Estilos para botones de sesión */
+.btn-sesion {
+    margin: 15px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    color: var(--bg-color);
+    background-color: var(--buttons-login-extra);
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.53);
+}
+
+.btn-sesion:hover {
+    background-color: #c8be2b;
+}
+
+.btn-sesion:active {
+    background-color: #5f5a13;
+}
+
+/* Estilos para el área de información de registro */
+.info-reg {
+    margin: 20px 0 10px 0;
+    background-color: var(--background-label);
+    text-indent: 15px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    color: var(--bg-color);
+}
+
+.info-reg.error {
+    border: 2px solid red;
+}
+
+.info-reg::placeholder {
+    color: var(--placeholder-color);
+    text-align: left;
+}
+
+/* Estilos para etiquetas de registro */
+.registrate label {
+    padding: 25px 0;
+    color: white;
+    font-size: 15px;
+    width: auto;
+}
+
+.registrate label a {
+    color: rgb(255, 237, 0);
+    font-size: 15px;
+    font-weight: bold;
+}
+
+/* Media query para pantallas pequeñas */
+@media only screen and (max-width: 608px) {
+    .nav-container {
+        max-width: 1700px;
+        padding: 1rem 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .logo-header {
+        width: 50px;
+    }
+}
+
+- Archivo public/js/order.js
+- Aquí se pondrá la porción del código que iteresa a esta sección, para un detalle completo ver directamente el archivo en el repositorio.
+
+// SCRIPT PARA MANEJAR AGREGAR ITEMS AL CARRITO
+// ============================================
+
+if (path == "/orders.html") {
+  const productsContainer = document.getElementById('products');
+  const cartItemsContainer = document.getElementById('cart-items');
+  const cartTotalContainer = document.getElementById('cart-total');
+  const checkoutButton = document.getElementById('checkout');
+
+  let cart = [];
+
+  // Función para cargar productos desde la API
+  const loadProducts = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/items');
+      const products = await response.json();
+      displayProducts(products);
+    } catch (error) {
+      console.error('Error al cargar productos:', error);
+      alert('Error al cargar productos. Consulta la consola para más detalles.');
+    }
+  };
+
+  // Función para mostrar productos en la lista
+  const displayProducts = (products) => {
+    productsContainer.innerHTML = '';
+    products.forEach(product => {
+      const productElement = document.createElement('div');
+      productElement.classList.add('product');
+      productElement.innerHTML = `
+        <img src="${product.image || 'img/default.png'}" alt="${product.name}">
+        <div class="product-info">
+          <div>
+            <p>${product.category_name}. ${product.name}</p>
+          </div>
+          <div>
+            <p>Precio: $${product.price}</p>
+          </div>
+          <div>
+            <button class="agregarAlCarrito" data-id="${product.id}">Agregar al Carrito</button>
+          </div>
+        </div>
+      `;
+      productsContainer.appendChild(productElement);
+    });
+  };
+
+  // Función para agregar ítems al carrito
+  const addToCart = (productId) => {
+    const product = cart.find(item => item.id === productId);
+    if (product) {
+      product.amount++;
+    } else {
+      const productElement = [...productsContainer.querySelectorAll('.product')]
+        .find(productElement => productElement.querySelector('button').dataset.id == productId);
+      const name = productElement.querySelector('p').innerText;
+      const price = parseFloat(productElement.querySelectorAll('p')[1].innerText.replace('Precio: $', ''));
+      cart.push({ id: productId, name, price, amount: 1 });
+    }
+    displayCart();
+  };
+
+  // Función para eliminar ítems del carrito
+  const removeFromCart = (productId) => {
+    cart = cart.filter(item => item.id !== productId);
+    displayCart();
+  };
+
+  // Función para mostrar ítems en el carrito
+  const displayCart = () => {
+    cartItemsContainer.innerHTML = '';
+    let total = 0;
+    cart.forEach(item => {
+      const cartItemElement = document.createElement('div');
+      cartItemElement.classList.add('cart-item');
+      cartItemElement.innerHTML = `
+        <p>${item.name}</p>
+        <p>Cantidad: ${item.amount}</p>
+        <p>Precio: $${item.price * item.amount}</p>
+        <button class="remove-btn" data-id="${item.id}">Eliminar</button>
+      `;
+      cartItemsContainer.appendChild(cartItemElement);
+      total += item.price * item.amount;
+    });
+    cartTotalContainer.innerHTML = `<p>Total: $${total}</p>`;
+    // Mostrar o ocultar botón de checkout según el carrito esté vacío
+    checkoutButton.disabled = cart.length === 0;
+  };
+
+  // Eventos
+  productsContainer.addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON') {
+      const productId = parseInt(e.target.dataset.id, 10);
+      addToCart(productId);
+    }
+  });
+
+  cartItemsContainer.addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove-btn')) {
+      const productId = parseInt(e.target.dataset.id, 10);
+      removeFromCart(productId);
+    }
+  });
+
+  // Función para realizar el checkout
+  const handleCheckout = async () => {
+    if (cart.length === 0) {
+      alert('Debes agregar al menos un producto al carrito');
+      return;
+    }
+
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      alert('No se encontró el userId. Por favor, inicia sesión nuevamente.');
+      return;
+    }
+
+    const orderItems = cart.map(item => ({
+      item_id: item.id,
+      amount: item.amount
+    }));
+
+    const order = {
+      user_id: userId,
+      items: orderItems
+    };
+
+    // console.log('Order antes de enviar:', order); // Verificar la estructura de order aquí
+
+    try {
+      const response = await fetch('http://localhost:3000/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(order)
+      });
+
+      if (response.ok) {
+        alert('Compra realizada con éxito');
+        cart = [];
+        window.location.href = 'orders-list.html'; // Redirige a la lista de órdenes
+      } else {
+        alert('Error al realizar la compra');
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+      alert('Error al realizar la compra. Consulta la consola para más detalles.');
+    }
+  };
+
+  // Agregar EventListener para el botón de Finalizar Compra
+  checkoutButton.addEventListener('click', handleCheckout);
+
+  // Cargar productos al inicio
+  loadProducts();
+}
+
+- Archivo public/order-list.html
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/order.css" />
+  <link rel="stylesheet" href="css/login.css" />
+  <link rel="icon" href="img/logo.ico">
+  <title>Lista de Órdenes - Soda Estereo Fan Page</title>
+</head>
+<body>
+  <header class="header-login">
+    <nav class="nav-container-login">
+      <a href="index.html" style="width: 64px; z-index: 1;"><img class="logo-header" src="./img/logo-main.png" alt="soda stereo" /></a>
+      <ul>
+        <li><a href="orders.html" id="lista0">Crear Orden De Compra</a></li>
+        <li><a href="orders-list.html" id="lista1">Ver Ordenes De Compra</a></li>
+      </ul>
+      <div id="menu">
+        <button id="menuHamburguesa"></button>
+        <div class="invisible"></div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1>Lista de Órdenes</h1>
+
+    <div id="orders" class="orders-container">
+      <!-- Aquí se cargarán dinámicamente las órdenes -->
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  
+  <script>
+    AOS.init();
+  </script>
+  <script src="./js/order.js"></script>
+</body>
+</html>
+
+- Archivo public/css/login.css
+- Archivo public/css/order.css
+- Para evitar repetir líneas de código se pueden ver estos en la sección anterior.
+
+- Archivo public/js/order.js
+- Aquí el bloque de código que corresponde a esta página.
+
+// SCRIPT PARA MANEJAR EDITAR ELIMINAR ORDENES
+// ===========================================
+
+if (path == "/orders-list.html") {
+
+  // Función para cargar las órdenes desde la API y mostrarlas
+  const loadOrders = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/orders');
+      const orders = await response.json();
+      displayOrders(orders);
+    } catch (error) {
+      console.error('Error al cargar órdenes:', error);
+      alert('Error al cargar órdenes. Consulta la consola para más detalles.');
+    }
+  };
+
+  // Función para mostrar las órdenes en el DOM
+  const displayOrders = (orders) => {
+    const ordersContainer = document.getElementById('orders');
+    ordersContainer.innerHTML = '';
+
+    orders.forEach(order => {
+      const orderElement = document.createElement('div');
+      orderElement.classList.add('order');
+      orderElement.innerHTML = `
+        <div class="order-info">
+          <p><strong>Orden ID:</strong> ${order.id}</p>
+          <p><strong>Usuario ID:</strong> ${order.user_id}</p>
+          <p><strong>Fecha de Creación:</strong> ${new Date(order.created_at).toLocaleString()}</p>
+        </div>
+        <div class="order-items">
+          <h4>Ítems de la Orden:</h4>
+          ${order.items.map(item => `
+            <div class="order-item">
+              <p><strong>Ítem ID:</strong> ${item.item_id}</p>
+              <p><strong>Cantidad:</strong> ${item.amount}</p>
+            </div>
+          `).join('')}
+        </div>
+        <div class="order-actions">
+          <button class="edit-btn" data-order-id="${order.id}">Editar</button>
+          <button class="delete-btn" data-order-id="${order.id}">Eliminar</button>
+        </div>
+      `;
+      ordersContainer.appendChild(orderElement);
+
+      // Agregar listeners para los botones de editar y eliminar
+      const editButton = orderElement.querySelector('.edit-btn');
+      const deleteButton = orderElement.querySelector('.delete-btn');
+
+      editButton.addEventListener('click', () => {
+        // Redirigir a la página de edición de la orden con el ID correspondiente
+        window.location.href = `/orders-edit.html?id=${order.id}`;
+      });
+
+      deleteButton.addEventListener('click', () => {
+        // Confirmar la eliminación de la orden
+        if (confirm(`¿Seguro que quieres eliminar la orden ${order.id}?`)) {
+          deleteOrder(order.id);
+        }
+      });
+    });
+  };
+
+  // Función para eliminar una orden
+  const deleteOrder = async (orderId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/orders/${orderId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        alert(`Orden ${orderId} eliminada correctamente`);
+        loadOrders(); // Recargar la lista de órdenes después de la eliminación
+      } else {
+        alert('Error al intentar eliminar la orden');
+      }
+    } catch (error) {
+      console.error('Error al eliminar la orden:', error);
+      alert('Error al intentar eliminar la orden. Consulta la consola para más detalles.');
+    }
+  };
+
+  // Cargar las órdenes al cargar la página
+  loadOrders();
+
+}
+
+- Archivo public/order-edit.html
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Orden</title>
+  <link rel="stylesheet" href="css/order.css">
+  <link rel="stylesheet" href="css/login.css" />  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+</head>
+<body>
+  <header class="header-login">
+    <nav class="nav-container-login">
+      <a href="index.html" style="width: 64px; z-index: 1;"><img class="logo-header" src="./img/logo-main.png" alt="soda stereo" /></a>
+      <ul>
+        <li><a href="orders.html" id="lista0">Crear Orden De Compra</a></li>
+        <li><a href="orders-list.html" id="lista1">Ver Ordenes De Compra</a></li>
+      </ul>
+      <div id="menu">
+        <button id="menuHamburguesa"></button>
+        <div class="invisible"></div>
+      </div>
+    </nav>
+  </header>
+
+
+  <main>
+    <div class="container">
+      <div id="edit-order-form"></div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <script src="./js/order.js"></script>
+</body>
+</html>
+
+- Archivo public/css/login.css
+- Archivo public/css/order.css
+- Para evitar repetir líneas de código se pueden ver estos en la sección anterior.
+
+- Archivo public/js/order.js
+- Aquí el bloque de código que corresponde a esta página.
+
+// SCRIPT PARA MANEJAR EDITAR LA ORDEN YA CREADA
+// =============================================
+
+
+if (path.includes("/orders-edit.html")) {
+  const orderId = new URLSearchParams(window.location.search).get('id');
+
+  // Función para cargar los detalles de la orden desde la API
+  const loadOrderDetails = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/orders/${orderId}`);
+      const order = await response.json();
+      displayOrderDetails(order);
+    } catch (error) {
+      console.error(`Error al cargar la orden ${orderId}:`, error);
+      alert(`Error al cargar la orden ${orderId}. Consulta la consola para más detalles.`);
+    }
+  };
+
+  // Función para mostrar los detalles de la orden en el formulario de edición
+  const displayOrderDetails = (order) => {
+    const orderForm = document.getElementById('edit-order-form');
+    orderForm.innerHTML = `
+      <h2 class="order-edit-h2">Editar Orden</h2>
+      <div class="order-edit-container">
+        <div class="order-id">
+            <div>
+              <label for="order-id-${order.id}">Orden Número:</label>
+            </div>
+            <div>
+              <input type="number" id="order-id-${order.id}" value="${order.id}" disabled>  
+            </div>          
+        </div>
+
+        <div class="order-user">
+          <label for="order-user-${order.user_id}">Usuario ID:</label>
+          <input type="number" id="order-user-${order.user_id}" value="${order.user_id}" disabled>
+        </div>
+
+        <div class="order-date">
+          <label for="order-date-${new Date(order.created_at).toLocaleString()}">Fecha Creación:</label>
+          <input type="text" id="order-user-date-${new Date(order.created_at).toLocaleString()}" value="${new Date(order.created_at).toLocaleString()}" disabled>
+        </div>
+      
+      </div>
+  
+      <h3 class="order-edit-h2">Ítems de la Orden:</h3>
+
+      ${order.items.map(item => `
+        <div class="order-edit-container">
+          <div class="order-item">
+            <label for="order-item-${item.item_id}">Ítem ID:</label>
+            <input type="number" id="order-item-${item.item_id}" value="${item.item_id}" disabled>        
+          </div>
+          <div class="order-amount">
+            <label for="amount-${item.item_id}">Cantidad:</label>
+            <input type="number" id="amount-${item.item_id}" value="${item.amount}" min="1" required>
+          </div>
+        </div>
+        
+      `).join('')}
+      <div class="order-edit-container">
+        <button id="update-order-btn">Actualizar Orden</button>
+      </div>
+      
+    `;
+
+    const updateOrderButton = document.getElementById('update-order-btn');
+    updateOrderButton.addEventListener('click', () => {
+      updateOrder(order);
+    });
+  };
+
+  const updateOrder = async (order) => {
+    // Supongamos que queremos actualizar el primer ítem de la orden
+    const itemId = order.items[0].item_id;
+
+    // Construir el ID del elemento para la cantidad del ítem
+    const amountElementId = `amount-${itemId}`;
+
+    // Obtener el valor de cantidad del elemento del DOM
+    const amountValue = parseInt(document.getElementById(amountElementId).value, 10);
+
+    console.log("Valor de amount obtenido:", amountValue);
+
+    const updatedItems = order.items.map(item => ({
+      item_id: item.item_id,
+      amount: item.item_id === itemId ? amountValue : item.amount
+    }));
+
+    const updatedOrder = {
+      user_id: order.user_id,
+      items: updatedItems
+    };
+
+    console.log('Datos enviados al servidor:', updatedItems);
+
+
+    try {
+      const responseEdit = await fetch(`http://localhost:3000/api/orders/${order.id}`, {
+      
+        //const responseEdit = await fetch(`http://localhost:3000/api/orders/${order.id}/items/${itemId}`, {
+        // Tengo problemas para obtener el amount.
+
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedOrder)
+      });
+
+      if (responseEdit.ok) {
+        alert(`Orden ${order.id} actualizada correctamente`);
+        window.location.href = 'orders-list.html'; // Redirige de vuelta a la lista de órdenes
+      } else {
+        alert('Error al intentar actualizar la orden');
+      }
+    } catch (error) {
+      console.error(`Error al actualizar la orden ${order.id}:`, error);
+      alert(`Error al intentar actualizar la orden ${order.id}. Consulta la consola para más detalles.`);
+    }
+  };
+
+  // Cargar los detalles de la orden al cargar la página
+  loadOrderDetails();
+}
+
+INICIALIZAR SERVIDOR
+====================
+
+- Desde la consola: nodemon server.js
+- Para vincular el index.html en la carpeta public para que arranque desde ahí, ya se agregó el código necesario en el archivo server.js:
+- Si no se abre automáticamente una página en el navegador, intentar hacerlo de forma manual a la siguiente dirección: //localhost:3000
+
+VERIFICAR FUNCIONALIDAD
+=======================
+
+- Probar Endpoints. Uso de Postman para verificar que los endpoints funcionan correctamente (GET, POST, PUT, DELETE).
+
+ http://localhost:3000/api/users
+ http://localhost:3000/api/orders
+ http://localhost:3000/api/categories
+ http://localhost:3000/api/items
+
+- Creación De Usuario, utilizando Postman.
+
+ http://localhost:3000/api/auth/login
+ POST
+ Body - raw
+
+{
+    "username": "user@mail.com",
+    "password": "1234"
+}
+
+- Creación De Categoría, utilizando Postman.
+- Las categorías son las siguientes: Remera, Buzo, Gorra, Taza, Puas, Aros, Llavero.
+
+http://localhost:3000/api/categories
+
+ POST
+ Body - raw
+
+{
+  "name": "Llavero"
+}
+
+- Creación De Ítem, utilizando Postman.
+
+http://localhost:3000/api/items
+
+ POST
+ Body - raw
+
+{
+    "name": "Negro con cuatro logos en el pecho.",
+    "price": "25000.00",
+    "amount": 10,
+    "is_available": 1,
+    "image": null,
+    "category_id": 2
+}
+
+
+- Editar ítem de una orden de compra.
+http://localhost:3000/api/orders/27/items/1
+
+POST
+BODY RAW
+
+{
+    "id": 25,
+    "order_id": 27,
+    "item_id": 1,
+    "amount": 5
+}
+
+
+ARBOL DE CARPETAS Y ARCHIVOS DEL PROYECTO
+=========================================
+
+cac-nodejs/
+├── controllers/
+│   ├── authController.js
+│   ├── cateogryController.js
+│   ├── itemController.js
+│   ├── orderController.js
+│   └── userController.js
+├── models/
+│   ├── categoryModel.js
+│   ├── db.js
+│   ├── itemModel.js
+│   ├── orderItemModel.js
+│   ├── orderModel.js
+│   └── userModel.js
+│── public/
+│   └── css/
+│  	 └── login.css
+│  	 └── order.css
+│  	 └── style.css
+│   └── img/
+│   	 └── logo.jpg
+│   └── js/
+│   	 └── script.js
+│   	 └── order.js
+│   └── index.html
+│   └── login.html
+│   └── orders.html
+│   └── orders-edit.html
+│   └── orders-list.html
+│   └── sigin.html
+├── routes/
+│   ├── authRoutes.js
+│   ├── categoryRoutes.js
+│   ├── itemRoutes.js
+│   ├── orderRoutes.js
+│   └── userRoutes.js
+├── .env
+├── .gitignore
+├── LICENSE
+├── package-lock.json
+├── package.json
+├── README.md
+└── server.js
+
+Explicación de la Estructura Propuesta:
+
+controllers/:
+
+Esta carpeta contiene los archivos JavaScript que gestionan la lógica de la aplicación para cada entidad. Los controladores se encargan de recibir las solicitudes HTTP, interactuar con los modelos y devolver las respuestas adecuadas al cliente.
+
+- authController.js: Controlador para las operaciones de autenticación (login y registro de usuarios).
+- categoryController.js: Controlador para gestionar las operaciones CRUD de las categorías.
+- itemController.js: Controlador para gestionar las operaciones CRUD de los ítems.
+- orderController.js: Controlador para gestionar las operaciones CRUD de las órdenes.
+- userController.js: Controlador para gestionar las operaciones CRUD de los usuarios.
+
+models/:
+
+Esta carpeta contiene los archivos JavaScript que representan los modelos de datos de la aplicación. Cada archivo define un modelo que interactúa con la base de datos.
+
+- categoryModel.js: Modelo para las categorías.
+- db.js: Archivo de configuración de la conexión a la base de datos.
+- itemModel.js: Modelo para los ítems.
+- orderModel.js: Modelo para las órdenes.
+- userModel.js: Modelo para los usuarios.
+
+public/:
+
+Esta carpeta contiene los archivos estáticos de la aplicación, como hojas de estilo, imágenes y scripts JavaScript. Estos archivos son accesibles directamente desde el navegador.
+
+- css/: Contiene las hojas de estilo CSS para el diseño de la aplicación.
+- style.css: Hoja de estilo principal.
+- img/: Contiene las imágenes utilizadas en la aplicación.
+- logo.jpg: Logo de la aplicación.
+- js/: Contiene los scripts JavaScript del lado del cliente.
+- script.js: Script principal del cliente.
+- index.html: Página HTML principal que puede servir como punto de entrada a la aplicación.
+
+routes/:
+
+Esta carpeta contiene los archivos que definen las rutas de la aplicación. Las rutas se encargan de recibir las solicitudes HTTP y dirigirlas al controlador correspondiente.
+
+- authRoutes.js: Define las rutas relacionadas con la autenticación (login y registro).
+- categoryRoutes.js: Define las rutas para las operaciones CRUD de las categorías.
+- itemRoutes.js: Define las rutas para las operaciones CRUD de los ítems.
+- orderRoutes.js: Define las rutas para las operaciones CRUD de las órdenes.
+- userRoutes.js: Define las rutas para las operaciones CRUD de los usuarios.
+
+.env:
+
+Archivo de configuración de variables de entorno, utilizado para almacenar datos sensibles como las credenciales de la base de datos.
+
+.gitignore:
+
+Archivo que especifica qué archivos o directorios deben ser ignorados por Git.
+
+LICENSE:
+
+Archivo que contiene la licencia del proyecto.
+
+package-lock.json:
+
+Archivo generado automáticamente que asegura que las instalaciones de npm sean consistentes en todas las máquinas.
+
+package.json:
+
+Archivo de configuración de npm que contiene la información del proyecto y sus dependencias.
+
+README.md:
+
+Archivo que contiene información general del proyecto, como la descripción, instrucciones de instalación y uso.
+
+server.js:
+
+Archivo principal del servidor donde se configura y arranca la aplicación Node.js con Express.

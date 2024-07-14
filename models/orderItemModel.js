@@ -32,8 +32,17 @@ const OrderItem = {
   // Método para actualizar una relación order_item por su ID
   update: (id, orderItem, callback) => {
     // Consulta SQL para actualizar una relación order_item por ID
-    const sql = 'UPDATE orders_items SET order_id = ?, item_id = ?, amount = ? WHERE id = ?';
-    db.query(sql, [orderItem.order_id, orderItem.item_id, orderItem.amount, id], callback); // Ejecuta la consulta
+
+    //const sql = 'UPDATE orders_items SET order_id = ?, item_id = ?, amount = ? WHERE id = ?';
+    const sql = 'UPDATE orders_items SET amount = ? WHERE order_id = ? AND item_id = ?'; // este no está funcionando.
+
+    // db.query(sql, [orderItem.order_id, orderItem.item_id, orderItem.amount, id], callback); // Ejecuta la consulta
+
+    db.query(sql, [[orderItem.amount, orderItem.order_id, orderItem.item_id, id]], callback); // Ejecuta la consulta
+    
+    
+
+
   },
 
   // Método para eliminar una relación order_item por su ID

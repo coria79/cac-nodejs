@@ -11,7 +11,7 @@ if (path == "/login.html") {
     const contraLogin = document.getElementById("clave");
     let avisoLogin = document.getElementById("avisoLogin");
 
-    if (contraLogin.value != "" && emailLogin.value != "") { // Asegúrate de validar ambos campos
+    if (contraLogin.value != "" && emailLogin.value != "") { // Asegúrarse de validar ambos campos
       avisoLogin.style.display = "none";
       // Llama a IngresoLogin con los valores de email y clave
       IngresoLogin(emailLogin.value, contraLogin.value); // Pasar también la contraseña
@@ -202,7 +202,7 @@ if (path == "/orders.html") {
       items: orderItems
     };
 
-    console.log('Order antes de enviar:', order); // Verifica la estructura de order aquí
+    // console.log('Order antes de enviar:', order); // Verificar la estructura de order aquí
 
     try {
       const response = await fetch('http://localhost:3000/api/orders', {
@@ -233,8 +233,8 @@ if (path == "/orders.html") {
   loadProducts();
 }
 
-// SCRIPT PARA MANEJAR AGREGAR ITEMS AL CARRITO
-// ============================================
+// SCRIPT PARA MANEJAR EDITAR ELIMINAR ORDENES
+// ===========================================
 
 if (path == "/orders-list.html") {
 
@@ -417,8 +417,15 @@ if (path.includes("/orders-edit.html")) {
       items: updatedItems
     };
 
+    console.log('Datos enviados al servidor:', updatedItems);
+
+
     try {
       const responseEdit = await fetch(`http://localhost:3000/api/orders/${order.id}`, {
+      
+        //const responseEdit = await fetch(`http://localhost:3000/api/orders/${order.id}/items/${itemId}`, {
+        // Tengo problemas para obtener el amount.
+
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
