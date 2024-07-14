@@ -12,9 +12,15 @@ const OrderItem = {
   },
 
   // Método para encontrar una relación order_item por su ID
-  findById: (id, callback) => {
-    const sql = 'SELECT * FROM orders_items WHERE id = ?'; // Consulta SQL para seleccionar una relación order_item por ID
-    db.query(sql, [id], callback); // Ejecuta la consulta
+  findById: (orderId, itemId, callback) => {
+    const sql = 'SELECT * FROM orders_items WHERE order_id = ? AND id = ?'; // Consulta SQL para seleccionar una relación order_item por orderId e itemId
+    db.query(sql, [orderId, itemId], callback); // Ejecuta la consulta
+  },
+
+  // Método para obtener todas las relaciones order_item asociadas a un pedido específico
+  findByOrderId: (orderId, callback) => {
+    const sql = 'SELECT * FROM orders_items WHERE order_id = ?'; // Consulta SQL para seleccionar todas las relaciones order_item por orderId
+    db.query(sql, [orderId], callback); // Ejecuta la consulta
   },
 
   // Método para obtener todas las relaciones order_item
@@ -25,7 +31,8 @@ const OrderItem = {
 
   // Método para actualizar una relación order_item por su ID
   update: (id, orderItem, callback) => {
-    const sql = 'UPDATE orders_items SET order_id = ?, item_id = ?, amount = ? WHERE id = ?'; // Consulta SQL para actualizar una relación order_item por ID
+    // Consulta SQL para actualizar una relación order_item por ID
+    const sql = 'UPDATE orders_items SET order_id = ?, item_id = ?, amount = ? WHERE id = ?';
     db.query(sql, [orderItem.order_id, orderItem.item_id, orderItem.amount, id], callback); // Ejecuta la consulta
   },
 

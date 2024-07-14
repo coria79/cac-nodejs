@@ -76,7 +76,7 @@ body {
 }
 
 
-.remove-btn {
+.remove-btn, .delete-btn {
   background: red;
   color: white;
   border: none;
@@ -90,4 +90,43 @@ body {
   border-radius: 5px;
   background-color: #A5A5A5;
   color: #8A821C;
+}
+
+.orders-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Define columnas automáticas con un ancho mínimo de 300px */
+  gap: 20px; /* Espacio entre elementos de la grilla */
+}
+
+.order {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.order-info {
+  margin-bottom: 10px;
+}
+
+.order-info p {
+  margin: 5px 0;
+}
+
+.order-items {
+  margin-top: 10px;
+}
+
+.order-item {
+  margin-bottom: 5px;
+}
+
+.edit-btn {
+  display: block;
+  padding: 5px 10px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }

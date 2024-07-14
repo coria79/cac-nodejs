@@ -77,6 +77,23 @@ exports.updateOrder = (req, res) => {
   });
 };
 
+// Función para actualizar la cantidad de un ítem específico de una orden
+exports.updateOrderItem = (req, res) => {
+  const orderId = req.params.orderId;
+  const itemId = req.params.itemId;
+  const updatedAmount = req.body.amount; // Se espera que el nuevo amount venga en el body de la solicitud
+
+  // Llama al método updateOrderItem del modelo Order para actualizar la cantidad de un ítem específico de una orden
+  Order.updateOrderItem(orderId, itemId, updatedAmount, (err, result) => {
+    if (err) {
+      console.error(`Error al actualizar el item ${itemId} de la orden ${orderId}:`, err); // Registra errores en la consola
+      return res.status(500).json({ error: 'Internal Server Error' }); // Devuelve un error de servidor en caso de error
+    }
+
+    res.json({ message: 'Item de orden actualizado exitosamente' }); // Devuelve el resultado de la actualización en formato JSON
+  });
+};
+
 // Función para eliminar una orden existente
 exports.deleteOrder = (req, res) => {
   // Llama al método delete del modelo Order para eliminar la orden con el ID especificado

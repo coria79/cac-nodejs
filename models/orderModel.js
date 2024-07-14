@@ -97,6 +97,12 @@ const Order = {
     db.query(sql, [order.amount, order.user_id, order.created_at, id], callback); // Ejecuta la consulta
   },
 
+  // Método para actualizar un ítem específico de una orden por su order_id e item_id
+  updateOrderItem: (orderId, itemId, updatedAmount, callback) => {
+    const sql = 'UPDATE orders_items SET amount = ? WHERE order_id = ? AND item_id = ?';
+    db.query(sql, [updatedAmount, orderId, itemId], callback);
+  },
+
   // Método para eliminar una orden por su ID
   delete: (id, callback) => {
     // Antes de eliminar la orden, eliminar todos los items asociados desde la tabla intermedia orders_items

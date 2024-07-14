@@ -17,6 +17,9 @@ router.post('/', orderController.createOrder);
 // Ruta PUT para actualizar una orden existente por su ID (/api/orders/:id)
 router.put('/:id', orderController.updateOrder);
 
+// Ruta PUT para actualizar la cantidad de un ítem específico de una orden (/api/orders/:orderId/items/:itemId)
+router.put('/:orderId/items/:itemId', orderController.updateOrderItem);
+
 // Ruta DELETE para eliminar una orden por su ID (/api/orders/:id)
 router.delete('/:id', orderController.deleteOrder);
 

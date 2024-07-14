@@ -232,3 +232,202 @@ if (path == "/orders.html") {
   // Cargar productos al inicio
   loadProducts();
 }
+
+// SCRIPT PARA MANEJAR AGREGAR ITEMS AL CARRITO
+// ============================================
+
+if (path == "/orders-list.html") {
+
+  // Función para cargar las órdenes desde la API y mostrarlas
+  const loadOrders = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/orders');
+      const orders = await response.json();
+      displayOrders(orders);
+    } catch (error) {
+      console.error('Error al cargar órdenes:', error);
+      alert('Error al cargar órdenes. Consulta la consola para más detalles.');
+    }
+  };
+
+  // Función para mostrar las órdenes en el DOM
+  const displayOrders = (orders) => {
+    const ordersContainer = document.getElementById('orders');
+    ordersContainer.innerHTML = '';
+    
+    orders.forEach(order => {
+      const orderElement = document.createElement('div');
+      orderElement.classList.add('order');
+      orderElement.innerHTML = `
+        <div class="order-info">
+          <p><strong>Orden ID:</strong> ${order.id}</p>
+          <p><strong>Usuario ID:</strong> ${order.user_id}</p>
+          <p><strong>Fecha de Creación:</strong> ${new Date(order.created_at).toLocaleString()}</p>
+        </div>
+        <div class="order-items">
+          <h4>Ítems de la Orden:</h4>
+          ${order.items.map(item => `
+            <div class="order-item">
+              <p><strong>Ítem ID:</strong> ${item.item_id}</p>
+              <p><strong>Cantidad:</strong> ${item.amount}</p>
+            </div>
+          `).join('')}
+        </div>
+        <div class="order-actions">
+          <button class="edit-btn" data-order-id="${order.id}">Editar</button>
+          <button class="delete-btn" data-order-id="${order.id}">Eliminar</button>
+        </div>
+      `;
+      ordersContainer.appendChild(orderElement);
+
+      // Agregar listeners para los botones de editar y eliminar
+      const editButton = orderElement.querySelector('.edit-btn');
+      const deleteButton = orderElement.querySelector('.delete-btn');
+
+      editButton.addEventListener('click', () => {
+        // Redirigir a la página de edición de la orden con el ID correspondiente
+        window.location.href = `/orders-edit.html?id=${order.id}`;
+      });
+
+      deleteButton.addEventListener('click', () => {
+        // Confirmar la eliminación de la orden
+        if (confirm(`¿Seguro que quieres eliminar la orden ${order.id}?`)) {
+          deleteOrder(order.id);
+        }
+      });
+    });
+  };
+
+  // Función para eliminar una orden
+  const deleteOrder = async (orderId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/orders/${orderId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        alert(`Orden ${orderId} eliminada correctamente`);
+        loadOrders(); // Recargar la lista de órdenes después de la eliminación
+      } else {
+        alert('Error al intentar eliminar la orden');
+      }
+    } catch (error) {
+      console.error('Error al eliminar la orden:', error);
+      alert('Error al intentar eliminar la orden. Consulta la consola para más detalles.');
+    }
+  };
+
+  // Cargar las órdenes al cargar la página
+  loadOrders();
+
+}
+
+// SCRIPT PARA MANEJAR EDITAR LA ORDEN YA CREADA
+// =============================================
+
+
+if (path.includes("/orders-edit.html")) {
+  const orderId = new URLSearchParams(window.location.search).get('id');
+
+  // Función para cargar los detalles de la orden desde la API
+  const loadOrderDetails = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/orders/${orderId}`);
+      const order = await response.json();
+      displayOrderDetails(order);
+    } catch (error) {
+      console.error(`Error al cargar la orden ${orderId}:`, error);
+      alert(`Error al cargar la orden ${orderId}. Consulta la consola para más detalles.`);
+    }
+  };
+
+  // Función para mostrar los detalles de la orden en el formulario de edición
+  const displayOrderDetails = (order) => {
+    const orderForm = document.getElementById('edit-order-form');
+    orderForm.innerHTML = `
+      <h2>Editar Orden</h2>
+
+      <div class="order-id">
+        <label for="order-id-${order.id}">Orden Número:</label>
+        <input type="number" id="order-id-${order.id}" value="${order.id}" disabled>
+      </div>
+
+      <div class="order-user"></div>
+        <label for="order-user-${order.user_id}">Usuario ID:</label>
+        <input type="number" id="order-user-${order.user_id}" value="${order.user_id}" disabled>        
+      
+        <div class="order-date">
+          <label for="order-date-${new Date(order.created_at).toLocaleString()}">Fecha Creación:</label>
+          <input type="text" id="order-user-date-${new Date(order.created_at).toLocaleString()}" value="${new Date(order.created_at).toLocaleString()}" disabled>
+        </div>
+      
+        <h3>Ítems de la Orden:</h3>
+
+        ${order.items.map(item => `
+        <div class="order-item">
+          <label for="order-item-${item.item_id}">Ítem ID:</label>
+          <input type="number" id="order-item-${item.item_id}" value="${item.item_id}" min="1" required>        
+
+        </div>
+        
+        <div>
+          <label for="amount-${item.item_id}">Cantidad:</label>
+          <input type="number" id="amount-${item.item_id}" value="${item.amount}" min="1" required>
+        </div>
+        
+      `).join('')}
+      <button id="update-order-btn">Actualizar Orden</button>
+    `;
+
+    const updateOrderButton = document.getElementById('update-order-btn');
+    updateOrderButton.addEventListener('click', () => {
+      updateOrder(order);
+    });
+  };
+
+const updateOrder = async (order) => {
+  // Supongamos que queremos actualizar el primer ítem de la orden
+  const itemId = order.items[0].item_id;
+  
+  // Construir el ID del elemento para la cantidad del ítem
+  const amountElementId = `amount-${itemId}`;
+
+  // Obtener el valor de cantidad del elemento del DOM
+  const amountValue = parseInt(document.getElementById(amountElementId).value, 10);
+
+  console.log("Valor de amount obtenido:", amountValue);
+
+  const updatedItems = order.items.map(item => ({
+    item_id: item.item_id,
+    amount: item.item_id === itemId ? amountValue : item.amount
+  }));
+
+  const updatedOrder = {
+    user_id: order.user_id,
+    items: updatedItems
+  };
+
+  try {
+    const responseEdit = await fetch(`http://localhost:3000/api/orders/${order.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedOrder)
+    });
+
+    if (responseEdit.ok) {
+      alert(`Orden ${order.id} actualizada correctamente`);
+      window.location.href = 'orders-list.html'; // Redirige de vuelta a la lista de órdenes
+    } else {
+      alert('Error al intentar actualizar la orden');
+    }
+  } catch (error) {
+    console.error(`Error al actualizar la orden ${order.id}:`, error);
+    alert(`Error al intentar actualizar la orden ${order.id}. Consulta la consola para más detalles.`);
+  }
+};
+
+  // Cargar los detalles de la orden al cargar la página
+  loadOrderDetails();
+}

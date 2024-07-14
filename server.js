@@ -9,7 +9,7 @@
  * 
  * Importa y utiliza diferentes módulos de rutas para gestionar las solicitudes HTTP relacionadas con usuarios, órdenes, ítems, categorías y autenticación.
  * 
- * Además, sirve archivos estáticos desde las carpetas 'public' y 'views' y configura una ruta para servir un archivo HTML principal.
+ * Además, sirve archivos estáticos desde las carpetas 'public' y configura una ruta para servir un archivo HTML principal.
  * 
  * Escucha en el puerto especificado por la variable de entorno PORT, o por defecto en el puerto 3000.
  * Una vez iniciado, imprime un mensaje en la consola indicando en qué puerto está corriendo el servidor.
@@ -30,6 +30,7 @@ const orderRoutes = require('./routes/orderRoutes'); // Rutas para órdenes
 const itemRoutes = require('./routes/itemRoutes'); // Rutas para ítems
 const categoryRoutes = require('./routes/categoryRoutes'); // Rutas para categorías
 const authRoutes = require('./routes/authRoutes'); // Rutas para autenticación
+const orderItemRoutes = require('./routes/orderItemRoutes'); // Rutas para order_items
 
 const app = express();  // Crear una instancia de Express
 app.use(bodyParser.json());  // Usar body-parser para analizar solicitudes JSON
@@ -40,6 +41,7 @@ app.use('/api/orders', orderRoutes); // Rutas para órdenes
 app.use('/api/items', itemRoutes); // Rutas para ítems
 app.use('/api/categories', categoryRoutes); // Rutas para categorías
 app.use('/api', authRoutes); // Rutas para autenticación
+app.use('/api/orders', orderItemRoutes); // Rutas para order_items
 
 // Servir archivos estáticos desde la carpeta 'public'
 app.use(express.static(path.join(__dirname, 'public')));
