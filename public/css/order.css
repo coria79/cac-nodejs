@@ -130,3 +130,33 @@ body {
   border-radius: 5px;
   cursor: pointer;
 }
+
+.edit-btn, .delete-btn{
+  margin: 3px;
+}
+
+.order-edit-container{
+  display: flex;
+  flex-direction: column;
+  margin: 25px;
+}
+
+.order-edit-h2 {
+  display: flex;
+  justify-content: space-around;
+}
+
+.order-id, .order-user, .order-date, .order-item, .order-amount {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#update-order-btn{
+  padding: 3px 6px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

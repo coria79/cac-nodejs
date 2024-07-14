@@ -201,7 +201,7 @@ if (path == "/orders.html") {
       user_id: userId,
       items: orderItems
     };
-    
+
     console.log('Order antes de enviar:', order); // Verifica la estructura de order aquí
 
     try {
@@ -254,7 +254,7 @@ if (path == "/orders-list.html") {
   const displayOrders = (orders) => {
     const ordersContainer = document.getElementById('orders');
     ordersContainer.innerHTML = '';
-    
+
     orders.forEach(order => {
       const orderElement = document.createElement('div');
       orderElement.classList.add('order');
@@ -345,38 +345,48 @@ if (path.includes("/orders-edit.html")) {
   const displayOrderDetails = (order) => {
     const orderForm = document.getElementById('edit-order-form');
     orderForm.innerHTML = `
-      <h2>Editar Orden</h2>
+      <h2 class="order-edit-h2">Editar Orden</h2>
+      <div class="order-edit-container">
+        <div class="order-id">
+            <div>
+              <label for="order-id-${order.id}">Orden Número:</label>
+            </div>
+            <div>
+              <input type="number" id="order-id-${order.id}" value="${order.id}" disabled>  
+            </div>          
+        </div>
 
-      <div class="order-id">
-        <label for="order-id-${order.id}">Orden Número:</label>
-        <input type="number" id="order-id-${order.id}" value="${order.id}" disabled>
-      </div>
+        <div class="order-user">
+          <label for="order-user-${order.user_id}">Usuario ID:</label>
+          <input type="number" id="order-user-${order.user_id}" value="${order.user_id}" disabled>
+        </div>
 
-      <div class="order-user"></div>
-        <label for="order-user-${order.user_id}">Usuario ID:</label>
-        <input type="number" id="order-user-${order.user_id}" value="${order.user_id}" disabled>        
-      
         <div class="order-date">
           <label for="order-date-${new Date(order.created_at).toLocaleString()}">Fecha Creación:</label>
           <input type="text" id="order-user-date-${new Date(order.created_at).toLocaleString()}" value="${new Date(order.created_at).toLocaleString()}" disabled>
         </div>
       
-        <h3>Ítems de la Orden:</h3>
+      </div>
+  
+      <h3 class="order-edit-h2">Ítems de la Orden:</h3>
 
-        ${order.items.map(item => `
-        <div class="order-item">
-          <label for="order-item-${item.item_id}">Ítem ID:</label>
-          <input type="number" id="order-item-${item.item_id}" value="${item.item_id}" min="1" required>        
-
-        </div>
-        
-        <div>
-          <label for="amount-${item.item_id}">Cantidad:</label>
-          <input type="number" id="amount-${item.item_id}" value="${item.amount}" min="1" required>
+      ${order.items.map(item => `
+        <div class="order-edit-container">
+          <div class="order-item">
+            <label for="order-item-${item.item_id}">Ítem ID:</label>
+            <input type="number" id="order-item-${item.item_id}" value="${item.item_id}" disabled>        
+          </div>
+          <div class="order-amount">
+            <label for="amount-${item.item_id}">Cantidad:</label>
+            <input type="number" id="amount-${item.item_id}" value="${item.amount}" min="1" required>
+          </div>
         </div>
         
       `).join('')}
-      <button id="update-order-btn">Actualizar Orden</button>
+      <div class="order-edit-container">
+        <button id="update-order-btn">Actualizar Orden</button>
+      </div>
+      
     `;
 
     const updateOrderButton = document.getElementById('update-order-btn');
@@ -385,48 +395,48 @@ if (path.includes("/orders-edit.html")) {
     });
   };
 
-const updateOrder = async (order) => {
-  // Supongamos que queremos actualizar el primer ítem de la orden
-  const itemId = order.items[0].item_id;
-  
-  // Construir el ID del elemento para la cantidad del ítem
-  const amountElementId = `amount-${itemId}`;
+  const updateOrder = async (order) => {
+    // Supongamos que queremos actualizar el primer ítem de la orden
+    const itemId = order.items[0].item_id;
 
-  // Obtener el valor de cantidad del elemento del DOM
-  const amountValue = parseInt(document.getElementById(amountElementId).value, 10);
+    // Construir el ID del elemento para la cantidad del ítem
+    const amountElementId = `amount-${itemId}`;
 
-  console.log("Valor de amount obtenido:", amountValue);
+    // Obtener el valor de cantidad del elemento del DOM
+    const amountValue = parseInt(document.getElementById(amountElementId).value, 10);
 
-  const updatedItems = order.items.map(item => ({
-    item_id: item.item_id,
-    amount: item.item_id === itemId ? amountValue : item.amount
-  }));
+    console.log("Valor de amount obtenido:", amountValue);
 
-  const updatedOrder = {
-    user_id: order.user_id,
-    items: updatedItems
-  };
+    const updatedItems = order.items.map(item => ({
+      item_id: item.item_id,
+      amount: item.item_id === itemId ? amountValue : item.amount
+    }));
 
-  try {
-    const responseEdit = await fetch(`http://localhost:3000/api/orders/${order.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(updatedOrder)
-    });
+    const updatedOrder = {
+      user_id: order.user_id,
+      items: updatedItems
+    };
 
-    if (responseEdit.ok) {
-      alert(`Orden ${order.id} actualizada correctamente`);
-      window.location.href = 'orders-list.html'; // Redirige de vuelta a la lista de órdenes
-    } else {
-      alert('Error al intentar actualizar la orden');
+    try {
+      const responseEdit = await fetch(`http://localhost:3000/api/orders/${order.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedOrder)
+      });
+
+      if (responseEdit.ok) {
+        alert(`Orden ${order.id} actualizada correctamente`);
+        window.location.href = 'orders-list.html'; // Redirige de vuelta a la lista de órdenes
+      } else {
+        alert('Error al intentar actualizar la orden');
+      }
+    } catch (error) {
+      console.error(`Error al actualizar la orden ${order.id}:`, error);
+      alert(`Error al intentar actualizar la orden ${order.id}. Consulta la consola para más detalles.`);
     }
-  } catch (error) {
-    console.error(`Error al actualizar la orden ${order.id}:`, error);
-    alert(`Error al intentar actualizar la orden ${order.id}. Consulta la consola para más detalles.`);
-  }
-};
+  };
 
   // Cargar los detalles de la orden al cargar la página
   loadOrderDetails();
