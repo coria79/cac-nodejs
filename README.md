@@ -5,7 +5,7 @@ Profesora: Alicia Díaz.
 
 Repositorio Deploy: ([Link Repositorio](https://coria79.alwaysdata.net/))<br>
 (Intenté hacer el deploy en Always Data, no me fue posible)<br><br>
-Link Video Presentación: (Link Video YouTube)<br><br>
+Link Video Presentación: ([Link Video YouTube](https://www.youtube.com/watch?v=AcPoh1iAuec))<br><br>
 Diagrama Entidad Relación: 
 [DER](./docs/DER%20(Diagrama%20Entidad%20Relación).jpg)<br><br>
 
